@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Additional CSS for layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 20px; /* Add margin between containers */
+            border: 1px solid #ccc; /* Add a border for clarity */
+        }
+
+        .image-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .content {
+            flex: 2;
+        }
+
+        /* Add more CSS styles as needed */
+
+        /* Style for Lorem Ipsum sections */
+        .lorem-ipsum {
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Clasificador de Papa</h1>
+
+    <!-- Container 1 -->
+    <div class="container">
+        <!-- Left side (image) -->
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='images/Papa Inicial.jpeg') }}" width="300" height="200" alt="Potato Image">
+        </div>
+
+        <!-- Right side (economic importance explanation) -->
+        <div class="content">
+            <h2>Importancia económica de la papa</h2>
+            <p>
+                En la actualidad, los sistemas de producción alimentaria y agrícola enfrentan múltiples dificultades que impiden tener una alimentación y agricultura sostenible. FAO
+            </p>
+            <p>
+                Algunas prácticas agrícolas del cultivo de papa generan efectos negativos para la salud humana y el medio ambiente. Uno de estos efectos puede llegar a ser la escasez de recursos hídricos y afectación en los ecosistemas acuáticos por la demanda significativa de agua
+   </p>
+            <!-- Add more content here -->
+        </div>
+    </div>
+
+    <!-- Container 2 with Lorem Ipsum content -->
+    <div class="container">
+        <!-- Left side (image) -->
+        <div class="image-container">
+	    <img src="{{ url_for('static', filename='images/Papa Collage.JPG') }}" width="300" height="200" alt="Potato Image">
+        </div>
+
+        <!-- Right side (Lorem Ipsum content) -->
+        <div class="content lorem-ipsum">
+            <h2>Detectando enfermedades claves en la hoja de la papa</h2>
+            <p>
+                La detección temprana de las enfermedades de Tizón temprano (EB) y Tizón tardío (LB) reduce pérdidas económicas y productivas para los cultivadores de papa [4]. Esta detección puede ser llevada a cabo por expertos de forma visual en las hojas o en el tallo del cultivo.  Gracias al avance y permeabilidad de la tecnología en múltiples actividades, se ha observado que la implementación de IA en esta tarea puede ser una alternativa eficiente.
+             </p>
+        </div>
+    </div>
+
+    <!-- Container 3 with Lorem Ipsum content -->
+    <div class="container">
+        <!-- Left side (image) -->
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='images/Neural Net.JPG') }}" width="300" height="200" alt="Neural Net">
+        </div>
+
+        <!-- Right side (Lorem Ipsum content) -->
+        <div class="content lorem-ipsum">
+
+            <h2>Suba imagen para ser clasificada. 2</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept=".jpg, .jpeg, .png">
+        <input type="submit" value="Classify">
+
+            </p>
+        </div>
+    </div>
+
+    <!-- Add any additional content or sections as needed -->
+
+</body>
+</html>
