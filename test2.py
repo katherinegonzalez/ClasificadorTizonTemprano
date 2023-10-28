@@ -1,7 +1,7 @@
 #import os
 # os.kill(os.getpid(), 9)
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from fastai.vision.all import *
 import torch
 from pathlib import Path

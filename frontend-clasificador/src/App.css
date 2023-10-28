@@ -1,0 +1,42 @@
+.clasificador__container { 
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.clasificador__description {
+  margin-top: 30px;
+}
+
+.clasificador__select-image {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.clasificador__select-image img {
+  width: 220px;
+  height: 220px;
+}
+
+.clasificador__select-image figure {
+  position: relative;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.clasificador__select-image .delete-button {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  background-color: #4caf50;
+}
+
+.clasificador__select-image .delete-button:hover {
+  background-color: #4caf50ba;
+}
+
+.clasificador__select-image .default-image {
+  opacity: 0.5;
+}
