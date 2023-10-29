@@ -12,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 
 
-// const pages = ['Mi clasificador', 'Información', 'Sobe Nosotros'];
 const pages = {
   'mi-clasificador': 'Mi clasificador', 
   'informacion': 'Información', 
@@ -31,17 +30,12 @@ function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = page => () => {
+  const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-    console.log('click en: ', page);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -93,7 +87,9 @@ function ResponsiveAppBar() {
             >
               {Object.keys(pages).map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{pages[page]}</Typography>
+                  <Typography textAlign="center">
+                    <Link to={`/${page === 'mi-clasificador' ? '': page}`} style={{'textDecoration':'none', 'color': 'black'}}>{pages[page]}</Link>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -121,7 +117,7 @@ function ResponsiveAppBar() {
               
               <Button
                 key={page}
-                onClick={handleCloseNavMenu(page)} 
+                onClick={handleCloseNavMenu} 
                 sx={{ my: 2, display: 'block' }}
               >
                  <Link to={`/${page === 'mi-clasificador' ? '': page}`} style={{'textDecoration':'none', 'color': 'black'}}>{pages[page]}</Link>
