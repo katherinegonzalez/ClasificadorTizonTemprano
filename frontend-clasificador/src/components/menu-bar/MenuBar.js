@@ -9,9 +9,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import { Link } from 'react-router-dom';
 
 
-const pages = ['Mi clasificador', 'Información', 'Sobe Nosotros'];
+// const pages = ['Mi clasificador', 'Información', 'Sobe Nosotros'];
+const pages = {
+  'mi-clasificador': 'Mi clasificador', 
+  'informacion': 'Información', 
+  'sobre-nosotros': 'Sobe Nosotros'
+};
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -25,9 +31,9 @@ function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = page => () => {
     setAnchorElNav(null);
-    console.log('click en: ');
+    console.log('click en: ', page);
   };
 
   const handleCloseUserMenu = () => {
@@ -85,9 +91,9 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
+              {Object.keys(pages).map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center">{pages[page]}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -111,14 +117,15 @@ function ResponsiveAppBar() {
             <img src={'/logo-agro.png'} alt="default" height={40} width={40}/>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {Object.keys(pages).map((page) => (
+              
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block' }}
+                onClick={handleCloseNavMenu(page)} 
+                sx={{ my: 2, display: 'block' }}
               >
-                {page}
-              </Button>
+                 <Link to={`/${page === 'mi-clasificador' ? '': page}`} style={{'textDecoration':'none', 'color': 'black'}}>{pages[page]}</Link>
+              </Button> 
             ))}
           </Box>
 
