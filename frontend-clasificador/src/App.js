@@ -44,10 +44,10 @@ function App() {
       <figure>
         <img src={image} alt="default" className={image === '/default-image.png' ? 'default-image' : ''} />
         { image !== '/default-image.png' &&
-        <IconButton aria-label="delete" className='delete-button' onClick={onImageDelete}>
-          <DeleteIcon />
-        </IconButton>
-      }
+          <IconButton aria-label="delete" className='delete-button' onClick={onImageDelete}>
+            <DeleteIcon />
+          </IconButton>
+        }
       </figure>
 
       { image === '/default-image.png' && <Button

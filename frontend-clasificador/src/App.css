@@ -6,7 +6,7 @@
 }
 
 .clasificador__description {
-  margin-top: 30px;
+  margin-top: 45px;
 }
 
 .clasificador__select-image {
@@ -30,11 +30,11 @@
   position: absolute;
   bottom: 3px;
   right: 3px;
-  background-color: #4caf50;
+  background-color: #8bc34a;
 }
 
 .clasificador__select-image .delete-button:hover {
-  background-color: #4caf50ba;
+  background-color: #8bc34acc;
 }
 
 .clasificador__select-image .default-image {
