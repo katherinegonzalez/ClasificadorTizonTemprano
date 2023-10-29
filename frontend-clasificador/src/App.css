@@ -15,6 +15,16 @@
   flex-direction: column;
 }
 
+.clasificador__select-image div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.clasificador__select-image .classification-result {
+  margin-top: 30px;
+}
+
 .clasificador__select-image img {
   width: 220px;
   height: 220px;
@@ -39,4 +49,17 @@
 
 .clasificador__select-image .default-image {
   opacity: 0.5;
+}
+
+
+.classification-result button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.classification-result button:hover {
+  background-color: #8bc34a;
 }
