@@ -25,7 +25,8 @@
   margin-top: 30px;
 }
 
-.clasificador__select-image img {
+.clasificador__select-image img,
+.result_classification-image img {
   width: 220px;
   height: 220px;
 }
@@ -62,4 +63,16 @@
 
 .classification-result button:hover {
   background-color: #8bc34a;
+}
+
+.result_classification-image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.result_classification-image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
 }

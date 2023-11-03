@@ -4,15 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { green, lightGreen, lime } from '@mui/material/colors';
+import { lightGreen, lime } from '@mui/material/colors';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-/*const theme = createTheme({
-  palette: {
-    primary: green,
-    secondary: lightGreen,
-  },
-});*/
 
 const theme = createTheme({
   palette: {

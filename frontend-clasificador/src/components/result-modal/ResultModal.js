@@ -17,7 +17,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-function ResultModal () {
+function ResultModal ({
+  image
+}) {
 
   const {openModal, setOpenModal} = useContext(AppContext);
 
@@ -47,6 +49,9 @@ function ResultModal () {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
+          <div className='result_classification-image'>
+            <img src={image} alt="default" />
+          </div>
           <Typography gutterBottom>
             Predicted Class: Papa Sana
           </Typography>

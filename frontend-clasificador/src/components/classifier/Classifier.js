@@ -28,15 +28,9 @@ function Classifier() {
      }
     
      const onClassifyImage = () => {
-  
+
       console.log('Clasificar Imagen: ', image);
     }
-
-    const openResultModal = () => {
-      console.log('Abrir Modal');
-    }
-
-    console.log(openModal);
      
     return (
       <div className='clasificador__container'>
@@ -74,7 +68,7 @@ function Classifier() {
           <Button variant="contained" onClick={onClassifyImage}>Clasificar</Button>
           }
           </div>
-          { image === '/default-image.png' &&
+          { image !== '/default-image.png' &&
             <div className='classification-result'>
               <strong>Resultado: Papa Sana</strong> 
               <p>Teniendo en cuenta la imagen de la hoja cargada, se identifica que la papa está sana!</p>
@@ -82,7 +76,7 @@ function Classifier() {
             </div>
           }
         </section> 
-        <ResultModal/>
+        <ResultModal image={image}/>
       </div>  
     );
   }
