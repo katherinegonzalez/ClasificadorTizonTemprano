@@ -77,7 +77,7 @@ function Classifier() {
           <p>
             Usarlo es muy simple, solo tienes que subir las imágenes de las hojas de tus plantas de papa y hacer click en el botón <strong>Clasificar</strong>.
             Si deseas obtener más información acerca de esta clasificación, haz click en el link <strong>'click aquí'</strong> ubicado en la parte inferior de tu imagen
-            una vez hayas obtenido el resultado de la clasificación. Si desea hacer una nueva clasificación puede borrar la imagen actual con el ícono del basurero.
+            una vez hayas obtenido el resultado de la clasificación. Si deseas hacer una nueva clasificación puedes borrar la imagen actual con el ícono del basurero ubicado en la parte inferior derecha de la imagen cargada.
           </p>
         </section>  
         <section className="clasificador__select-image">
@@ -114,7 +114,8 @@ function Classifier() {
               <h3>Resultado: {predictedClass}</h3> 
               <br />
               <p>Teniendo en cuenta la imagen de la hoja cargada, se identifica que {mensajeClasificacion[predictedClass]} </p>
-              <p>Si desea tener más información haga <button onClick={() => {setOpenModal(true)}}><strong>click aquí</strong></button>.</p>
+              <br />
+              <p>Si deseas tener más información haz <button onClick={() => {setOpenModal(true)}}><strong>click aquí</strong></button>.</p>
             </div>
           }
         </section> 
