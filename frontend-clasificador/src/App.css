@@ -9,6 +9,11 @@
   margin-top: 45px;
 }
 
+.clasificador__description div {
+  display: flex;
+  justify-content: center;
+}
+
 .clasificador__select-image {
   margin-top: 30px;
   display: flex;
@@ -19,10 +24,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.clasificador__select-image .classification-result {
-  margin-top: 30px;
 }
 
 .clasificador__select-image img,
@@ -73,6 +74,12 @@
 
 .result_classification-image {
   display: flex;
-  justify-content: center;
   margin-bottom: 30px;
+  flex-direction: column;
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  margin-left: 20px;
 }

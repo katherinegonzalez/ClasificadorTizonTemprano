@@ -9,3 +9,6 @@ Si al ejecutar se tiene el error:
  Entonces: 
 
 sudo !pip3 install flask install Pillow==9.1.0
+
+
+sudo pip3 install -U flask-cors

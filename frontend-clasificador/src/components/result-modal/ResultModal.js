@@ -18,13 +18,21 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 function ResultModal ({
-  image
+  image,
+  predictedClass,
+  probabilities
 }) {
 
   const {openModal, setOpenModal} = useContext(AppContext);
 
   const handleClose = () => {
     setOpenModal(false);
+  };
+
+  const etiquetas =  {
+    0: 'Papa Sana',
+    1: 'Tizón Tardío',
+    2: 'Tizón Temprano' 
   };
 
   return (
@@ -51,21 +59,23 @@ function ResultModal ({
         <DialogContent dividers>
           <div className='result_classification-image'>
             <img src={image} alt="default" />
+            <br />
+            <h3>
+            Resultado de la Clasificación: {predictedClass}
+            </h3>
           </div>
-          <Typography gutterBottom>
-            Predicted Class: Papa Sana
-          </Typography>
-          <Typography gutterBottom>
-          Class Probabilities:
-
-          Papa Sana: 0.4172878861427307
-          Tizón Tardío: 0.2733481824398041
-          Tizón Temprano: 0.3093639016151428
-          </Typography>
-          <Typography gutterBottom>
-            Recomendación: 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum est egestas egestas vulputate. Nam fermentum imperdiet ipsum, id congue massa laoreet in. Donec tincidunt quis tellus eget interdum. Integer in mollis tortor. 
-          </Typography>
+          <br />
+          <h4>Probabilidades:</h4>
+          <br />
+            <ul>
+              {probabilities.map((probability, index) =>
+                <li key={probability}> <strong>{etiquetas[index]}:</strong>{probability}</li>
+              )}
+            </ul>
+          <br />
+          <h4>Recomendación:</h4> 
+          <br /> 
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum est egestas egestas vulputate. Nam fermentum imperdiet ipsum, id congue massa laoreet in. Donec tincidunt quis tellus eget interdum. Integer in mollis tortor. </p>
         </DialogContent>
       </BootstrapDialog>
   );
