@@ -12,3 +12,12 @@ sudo !pip3 install flask install Pillow==9.1.0
 
 
 sudo pip3 install -U flask-cors
+
+
+sudo pip3 install PyJWT
+
+
+sudo pip3 show Flask-SQLAlchemy
+
+sudo pip3 install pymysql
+
