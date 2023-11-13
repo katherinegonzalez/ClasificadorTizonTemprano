@@ -8,14 +8,38 @@ import { lightGreen, lime } from '@mui/material/colors';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const primary = {
+  main: '#4CAF50',
+  light: '#C8E6C9',
+  dark: '#388E3C',
+  contrastText: '#fff'
+};
+
+const text = {
+  primary: '#212121',
+  secondary: '#757575',
+  disabled: '#BDBDBD'
+}
+
+const secondary = {
+  main: '#8BC34A',
+  contrastText: '#fff'
+};
+
+const divider = '#BDBDBD';
+const accent = '#8BC34A';
+
 const theme = createTheme({
   palette: {
-    primary: lightGreen,
-    secondary: lime,
+    primary,
+    secondary,
+    text,
+    divider,
+    accent
   },
 });
 
-
+/*'#DCEDC8'*/
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>

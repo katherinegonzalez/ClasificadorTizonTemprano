@@ -53,6 +53,9 @@
   opacity: 0.5;
 }
 
+.default-image {
+  opacity: 0.4;
+}
 
 .classification-result button {
   cursor: pointer;

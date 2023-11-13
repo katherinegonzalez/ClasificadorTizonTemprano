@@ -9,8 +9,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
-
+import { Link, useLocation } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+import Stack from '@mui/material/Stack';
 
 const pages = {
   'mi-clasificador': 'Mi clasificador', 
@@ -34,8 +36,12 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   return (
-    <AppBar position="sticky">
+      <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -120,14 +126,61 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu} 
                 sx={{ my: 2, display: 'block' }}
               >
-                 <Link to={`/${page === 'mi-clasificador' ? '': page}`} style={{'textDecoration':'none', 'color': 'black'}}>{pages[page]}</Link>
+                <Link to={`/${page === 'mi-clasificador' ? '': page}`} style={{'textDecoration':'none', 'color': 'white'}}>{pages[page]}</Link>
               </Button> 
             ))}
           </Box>
 
+          { false && 
+          
+            <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          
+          }
+          <Stack spacing={2} direction="row">
+            <Button variant="contained" color="secondary">
+              <Link to='/login' style={{'textDecoration':'none', 'color': 'white'}}>
+                INICIAR SESIÓN
+              </Link>
+            </Button>
+            <Button variant="contained" color="secondary">
+              <Link to='/registro' style={{'textDecoration':'none', 'color': 'white'}}>
+                REGISTRARSE
+              </Link>
+            </Button>
+          </Stack>
+
         </Toolbar>
       </Container>
     </AppBar>
+    
   );
 }
 export default ResponsiveAppBar;

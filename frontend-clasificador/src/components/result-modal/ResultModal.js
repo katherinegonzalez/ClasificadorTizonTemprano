@@ -72,10 +72,6 @@ function ResultModal ({
                 <li key={probability}> <strong>{etiquetas[index]}:</strong>{probability}</li>
               )}
             </ul>
-          <br />
-          <h4>Recomendación:</h4> 
-          <br /> 
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum est egestas egestas vulputate. Nam fermentum imperdiet ipsum, id congue massa laoreet in. Donec tincidunt quis tellus eget interdum. Integer in mollis tortor. </p>
         </DialogContent>
       </BootstrapDialog>
   );
