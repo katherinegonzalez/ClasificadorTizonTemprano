@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -26,14 +26,39 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+
+  const signUpURL = 'http://127.0.0.1:5000/registro'
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const formData = {
+      name: data.get('name'),
+      lastname: data.get('lastname'),
+      occupation: data.get('occupation'),
       email: data.get('email'),
       password: data.get('password'),
+    };
+    console.log(formData);
+
+    fetch('http://127.0.0.1:5000/registro', {
+      method: 'POST',
+      body:  JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json', // Establece el tipo de contenido como JSON
+      },
+    })
+    .then(response => response.json()) 
+    .then(response => {
+      console.log(response);
+      // setLoading(false);
+    })
+    .catch(err => {
+      // setLoading(false);
+      // setshowError(true)
+      console.log(err)
     });
   };
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -50,18 +75,18 @@ export default function SignUp() {
         <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-        Sign up
+          Registrarse
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
             <TextField
                 autoComplete="given-name"
-                name="firstName"
+                name="name"
                 required
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label="Nombre"
                 autoFocus
             />
             </Grid>
@@ -70,8 +95,8 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="lastName"
-                label="Last Name"
-                name="lastName"
+                label="Apellido"
+                name="lastname"
                 autoComplete="family-name"
             />
             </Grid>
@@ -79,8 +104,18 @@ export default function SignUp() {
             <TextField
                 required
                 fullWidth
+                id="occupation"
+                label="Ocupación"
+                name="occupation"
+                autoComplete="occupation"
+            />
+            </Grid>
+            <Grid item xs={12}>
+            <TextField
+                required
+                fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
                 autoComplete="email"
             />
@@ -109,12 +144,12 @@ export default function SignUp() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
         >
-            Sign Up
+            Registrarse
         </Button>
         <Grid container justifyContent="flex-end">
             <Grid item>
             <Link href="#" variant="body2">
-                Already have an account? Sign in
+                Ya tienes ua cuenta? Inicia Sesión
             </Link>
             </Grid>
         </Grid>

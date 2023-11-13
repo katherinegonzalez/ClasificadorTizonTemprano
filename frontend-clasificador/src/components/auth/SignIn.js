@@ -29,10 +29,31 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const formData = {
       email: data.get('email'),
       password: data.get('password'),
+    };
+    console.log(formData);
+
+    fetch('http://127.0.0.1:5000/login', {
+      method: 'POST',
+      body:  JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json', // Establece el tipo de contenido como JSON
+      },
+    })
+    .then(response => response.json()) 
+    .then(response => {
+      console.log(response);
+      // setLoading(false);
+    })
+    .catch(err => {
+      // setLoading(false);
+      // setshowError(true)
+      console.log(err)
     });
+
+
   };
 
   return (

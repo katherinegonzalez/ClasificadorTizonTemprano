@@ -37,16 +37,18 @@ def registro():
     try:
         # Obtiene los datos del formulario de registro
         datos_registro = request.get_json()
+        print('datos_registro: ', datos_registro)
         name = datos_registro['name']
-        password = datos_registro['password']
-        email = datos_registro['email']
+        lastname = datos_registro['lastname']
         occupation = datos_registro['occupation']
+        email = datos_registro['email']
+        password = datos_registro['password']
 
          # Verifica si el usuario ya existe en la base de datos
         if User.query.filter_by(email=email).first():
             return jsonify({'message': 'El usuario ya existe'}), 400
         
-        nuevo_usuario = User(name=name, password=password, email=email, occupation=occupation)
+        nuevo_usuario = User(name=name, lastname=lastname, password=password, email=email, occupation=occupation)
         db.session.add(nuevo_usuario)
         db.session.commit()
 
