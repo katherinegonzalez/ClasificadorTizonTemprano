@@ -17,7 +17,16 @@ sudo pip3 install -U flask-cors
 sudo pip3 install PyJWT
 
 
-sudo pip3 show Flask-SQLAlchemy
+sudo pip3 install Flask-SQLAlchemy
 
 sudo pip3 install pymysql
 
+
+
+TODO:
+
+Almacenar la cookie de sesión
+usar isAutheticated para mostrar os componentes permitidos
+buscar como verificar con el backend que el token sea correcto para las peticiones
+Hacer la interfaz de aprobar imagenes
+almacenar las imagenes clasificadas en la base de datos o en google drive. Revisar que es mejor
