@@ -26,6 +26,13 @@ function Copyright() {
   );
 }
 
+// TODO: 
+// 1. CREAR SERVICIO PARA ALMACENAR IMAGENES EN DRIVE EN UNA CARPETA y EN LA BD almacenar la ruta y un campo booleano para saber si se fue o no aprobada
+// 3. CREAR SERVICIO PARA RETORNAR IMAGENES ALMACENADAS
+// 5. HACER PETICIÓN AL SERVIDOR PARA TRAER LAS IMAGENES
+// 6. HACER SERVICIO PARA QUE CUANDO EL USUARIO LE DE CLICK EN APROBAR SE VAA DIRECTAMENTE A LA CARPETA DE DRIVE PARA ENTRENAR.
+// 7. 
+
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 // const cards = [];
 console.log(cards.length > 0);

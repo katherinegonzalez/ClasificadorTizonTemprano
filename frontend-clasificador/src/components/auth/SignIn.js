@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,8 +11,15 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { setSessionID } from './session';
+import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
+import { AppContext } from '../../context';
+import { Link as LinkRoute} from "react-router-dom";
+
 
 function Copyright(props) {
+
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -26,9 +33,23 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  const [loading, setLoading] = useState(false);
+  const {isAuth, setIsAuth} = useContext(AppContext);
+  
+  const navigate = useNavigate();
+
+  
+  const [rememberMe, setRememberMe] = useState(false);
+  const handleCheckboxChange = (event) => {
+    setRememberMe(event.target.checked);
+  };
+  
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true);
     const data = new FormData(event.currentTarget);
+    console.log('remember:', event.target.elements);
     const formData = {
       email: data.get('email'),
       password: data.get('password'),
@@ -45,10 +66,14 @@ export default function SignIn() {
     .then(response => response.json()) 
     .then(response => {
       console.log(response);
-      // setLoading(false);
+      setLoading(false);
+      setSessionID(response.token, rememberMe);
+      setIsAuth(true);
+      navigate('/validacion-experto');
     })
     .catch(err => {
-      // setLoading(false);
+      setLoading(false);
+      setIsAuth(false);
       // setshowError(true)
       console.log(err)
     });
@@ -59,6 +84,8 @@ export default function SignIn() {
   return (
     <Container component="main" maxWidth="xs">
     <CssBaseline />
+    {loading && <CircularProgress/> }
+    {!loading && 
     <Box
         sx={{
         marginTop: 8,
@@ -71,7 +98,7 @@ export default function SignIn() {
         <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-        Sign in
+          Iniciar Sesión
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <TextField
@@ -79,7 +106,7 @@ export default function SignIn() {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email"
             name="email"
             autoComplete="email"
             autoFocus
@@ -95,8 +122,8 @@ export default function SignIn() {
             autoComplete="current-password"
         />
         <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            control={<Checkbox value="remember" color="primary" checked={rememberMe} onChange={handleCheckboxChange}/>}
+            label="Recordarme"
         />
         <Button
             type="submit"
@@ -105,22 +132,27 @@ export default function SignIn() {
             color="primary"
             sx={{ mt: 3, mb: 2 }}
         >
-            Sign In
+            Iniciar Sesión
         </Button>
         <Grid container>
             <Grid item xs>
-            <Link href="#" variant="body2">
-                Forgot password?
-            </Link>
+            <LinkRoute to="/registro" style={{ textDecoration: 'none' }}>
+              <Typography  variant="body2" color="primary">
+                ¿Olvidaste tu contraseña?
+              </Typography>
+            </LinkRoute>
             </Grid>
             <Grid item>
-            <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-            </Link>
+            <LinkRoute to="/registro" style={{ textDecoration: 'none' }}>
+              <Typography  variant="body2" color="primary">
+                ¿No tienes una cuenta? Regístrate"
+              </Typography>
+            </LinkRoute>
             </Grid>
         </Grid>
         </Box>
     </Box>
+  }
     <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );

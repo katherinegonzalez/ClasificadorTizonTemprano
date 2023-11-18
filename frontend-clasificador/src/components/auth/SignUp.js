@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +11,11 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { setSessionID } from './session';
+import { CircularProgress } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Link as LinkRoute} from "react-router-dom";
+import { AppContext } from '../../context';
 
 function Copyright(props) {
   return (
@@ -26,10 +31,15 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+  const [loading, setLoading] = useState(false);
+  const {isAuth, setIsAuth} = useContext(AppContext);
+
+  const navigate = useNavigate();
 
   const signUpURL = 'http://127.0.0.1:5000/registro'
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true);
     const data = new FormData(event.currentTarget);
     const formData = {
       name: data.get('name'),
@@ -50,10 +60,13 @@ export default function SignUp() {
     .then(response => response.json()) 
     .then(response => {
       console.log(response);
-      // setLoading(false);
+      setSessionID(response.token);
+      setIsAuth(true);
+      navigate('/validacion-experto');
+      setLoading(false);
     })
     .catch(err => {
-      // setLoading(false);
+      setLoading(false);
       // setshowError(true)
       console.log(err)
     });
@@ -61,8 +74,11 @@ export default function SignUp() {
 
 
   return (
+   
     <Container component="main" maxWidth="xs">
     <CssBaseline />
+    {loading && <CircularProgress/> }
+    {!loading && 
     <Box
         sx={{
         marginTop: 8,
@@ -148,14 +164,18 @@ export default function SignUp() {
         </Button>
         <Grid container justifyContent="flex-end">
             <Grid item>
-            <Link href="#" variant="body2">
-                Ya tienes ua cuenta? Inicia Sesión
-            </Link>
+            <LinkRoute to="/login" style={{ textDecoration: 'none' }}>
+              <Typography  variant="body2" color="primary">
+                ¿Ya tienes una cuenta? Inicia Sesión
+              </Typography>
+            </LinkRoute>
             </Grid>
         </Grid>
         </Box>
     </Box>
+  }
     <Copyright sx={{ mt: 5 }} />
+ 
     </Container>
   );
 }

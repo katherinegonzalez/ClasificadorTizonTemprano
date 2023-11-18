@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,21 +8,28 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
+import { deleteCookie } from '../auth/session';
+import { AppContext } from '../../context';
+import React, { useContext, useState } from 'react';
 
 const pages = {
   'mi-clasificador': 'Mi clasificador', 
-  'informacion': 'Información', 
+  'validacion-experto': 'Ayudanos a Mejorar', 
   'sobre-nosotros': 'Sobe Nosotros'
 };
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = {
+  'profile': 'Perfil', 
+  'logout': 'Cerrar Sesión',
+};
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const {isAuth, setIsAuth} = useContext(AppContext);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -36,8 +42,12 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (settingValue) => {
     setAnchorElUser(null);
+    if (settingValue === 'logout') {
+      deleteCookie();
+      setIsAuth(false);
+    }
   };
 
   return (
@@ -91,7 +101,8 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {Object.keys(pages).map((page) => (
+              {Object.keys(pages).filter(page => (!isAuth && page !== 'validacion-experto') || isAuth)
+                .map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">
                     <Link to={`/${page === 'mi-clasificador' ? '': page}`} style={{'textDecoration':'none', 'color': 'black'}}>{pages[page]}</Link>
@@ -119,8 +130,8 @@ function ResponsiveAppBar() {
             <img src={'/logo-agro.png'} alt="default" height={40} width={40}/>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {Object.keys(pages).map((page) => (
-              
+            {Object.keys(pages).filter(page => (!isAuth && page !== 'validacion-experto') || isAuth)
+              .map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu} 
@@ -131,7 +142,7 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          { false && 
+          { isAuth && 
           
             <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -155,15 +166,17 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {Object.keys(settings).map((setting) => (
+                <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+                  <Typography textAlign="center">{settings[setting]}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
           
           }
+
+          { !isAuth && 
           <Stack spacing={2} direction="row">
             <Button variant="contained" color="secondary">
               <Link to='/login' style={{'textDecoration':'none', 'color': 'white'}}>
@@ -176,7 +189,7 @@ function ResponsiveAppBar() {
               </Link>
             </Button>
           </Stack>
-
+          }
         </Toolbar>
       </Container>
     </AppBar>

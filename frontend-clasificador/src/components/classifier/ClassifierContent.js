@@ -55,7 +55,17 @@ function ClassifierContent() {
       console.log(response);
       setpredictedClass(response.predicted_class);
       setProbabilities(response.probabilities);
-      setLoading(false);
+
+      // Almacenar imagen para ser valdiada por experto después
+      formData.append('classification', response.predicted_class);
+      fetch('http://127.0.0.1:5000/saveImages', {
+        method: 'POST',
+        body: formData,
+      }).then(() => setLoading(false))
+      .catch(err => {
+        console.log(err)
+        setLoading(false);
+      });
     })
     .catch(err => {
       setLoading(false);

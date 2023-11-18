@@ -2,5 +2,7 @@ import { createContext } from "react";
 
 export const AppContext = createContext({
     openModal: false,
-    setopenModal: () => {},
+    setopenModal: () => {},  
+    isAuth: false,
+    setIsAuth: ()  => {}
   });
