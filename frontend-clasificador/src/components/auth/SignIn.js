@@ -35,7 +35,7 @@ function Copyright(props) {
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const { setIsAuth} = useContext(AppContext);
-  const { setShowError} = useContext(AppContext);
+  const { setShowError } = useContext(AppContext);
   const [errors, setErrors] = useState({});
   
   const navigate = useNavigate();
@@ -108,10 +108,32 @@ export default function SignIn() {
   };
 
   return (
+    <>
+    {loading && 
+      <Container 
+        component="main" 
+        maxWidth="xs" 
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: 'calc(100vh - 64px)',
+        }}>
+      <Box
+        sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center'
+        }}>
+          <CircularProgress/>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    }
+    {!loading && 
     <Container component="main" maxWidth="xs">
     <CssBaseline />
-    {loading && <CircularProgress/> }
-    {!loading && 
     <Box
         sx={{
         marginTop: 8,
@@ -183,9 +205,10 @@ export default function SignIn() {
             </Grid>
         </Grid>
         </Box>
-    </Box>
-  }
+    </Box> 
     <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
+    }
+    </>
   );
 }
