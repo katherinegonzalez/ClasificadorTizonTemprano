@@ -56,21 +56,51 @@ export default function ExpertValidation() {
     return `data:image/${imageType};base64, ${image}`;
   }
 
-  const onValidateClassification = ({imageId, isApprove}) => {
+  const onValidateClassification = ({imageId, isApproved}) => {
 
     const validatedCardsList = cards.map(image => {
       if (imageId === image.id)  {
 
-        if (image.isApprove === isApprove) {
-          image.isApprove = null;
+        if (image.isApproved === isApproved) {
+          image.isApproved = null;
         } else {
-          image.isApprove = isApprove; 
+          image.isApproved = isApproved; 
         }
       }
       return image;
     });
     console.log('validatedCardsList: ', validatedCardsList);
     setCards(validatedCardsList);
+  }
+
+  const onSaveValidation = () => {
+    const formData = new FormData();
+    /*cards.forEach((image, index) => {
+      console.log('image: ', image);
+      formData.append(`files[${index}]`, image);
+      // formData.append(`files[${index}].isApproved`, image.isApproved);
+      // formData.append(`files[${index}].id`, image.id);
+    });*/
+    const validatedImagesList = cards.filter(image =>image.isApproved !==null && image.isApproved !==undefined);
+    console.log('validatedImagesList: ', validatedImagesList);
+
+    formData.append('userId', 6);
+
+
+    formData.append('files', JSON.stringify(validatedImagesList));
+
+
+    fetch('http://127.0.0.1:5000/saveValidatedImages', {
+      method: 'POST',
+      body: formData,
+    }).then((response) => {
+      console.log('respuesta: ', response);
+      setLoading(false)
+    })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
   }
 
 
@@ -130,7 +160,7 @@ export default function ExpertValidation() {
                       }}
                       image={getImageUrl(card.image, card.imageType)}>
 
-                      { card.isApprove !== undefined && card.isApprove !== null &&
+                      { card.isApproved !== undefined && card.isApproved !== null &&
                         <Box
                           sx={{
                             position: 'absolute',
@@ -149,7 +179,7 @@ export default function ExpertValidation() {
                               sx={{
                                 fontWeight: 'bolder'
                               }}>
-                              {card.isApprove ? 'Clasificación Aprobada': 'Clasificación Rechazada'}
+                              {card.isApproved ? 'Clasificación Aprobada': 'Clasificación Rechazada'}
                             </Typography>
                         </Box>
                       }   
@@ -163,17 +193,17 @@ export default function ExpertValidation() {
                       <Button 
                         size="small" 
                         sx={  {
-                          backgroundColor: card.isApprove ? '#4caf504d' : ''
+                          backgroundColor: card.isApproved ? '#4caf504d' : ''
                         }}
-                        onClick={() => {onValidateClassification({imageId: card.id, isApprove: true})}}>
+                        onClick={() => {onValidateClassification({imageId: card.id, isApproved: true})}}>
                         Aprobar</Button>
                       <Button 
                         color="error" 
                         size="small"
                         sx={ {
-                           backgroundColor: card.isApprove === false ? '#d32f2f40' : ''
+                           backgroundColor: card.isApproved === false ? '#d32f2f40' : ''
                         }}
-                        onClick={() => {onValidateClassification({imageId: card.id, isApprove: false})}}>
+                        onClick={() => {onValidateClassification({imageId: card.id, isApproved: false})}}>
                           Rechazar</Button>
                     </CardActions>
                   </Card>
@@ -191,6 +221,7 @@ export default function ExpertValidation() {
               type="button"
               variant="contained"
               color="primary"
+              onClick={()=> {onSaveValidation()}}
               sx={{ mt: 3, mb: 2, width: '50%' }}>
               Guardar y Enviar
             </Button>

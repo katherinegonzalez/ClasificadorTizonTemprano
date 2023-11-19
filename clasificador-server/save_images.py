@@ -2,19 +2,21 @@ from flask import Flask, Blueprint, request, jsonify, current_app
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import jwt
-from models.models import Images, db
+from models.models import Images, User, db
 from io import BytesIO
 # from PIL import Image
 import os
 import os.path
 import base64
+import json
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import MediaIoBaseUpload
+from email.mime.image import MIMEImage
 
 from PIL import Image
 import imghdr
@@ -69,6 +71,14 @@ def saveImagesToValidate():
 @save_images_bp.route('/getImagesToValidate', methods=['GET'])
 def getImagesToValidate():
     try:
+
+        '''''''''
+        TODO:  
+        1. Investigar como recibir un array con varias imagenes
+        2. Tomar cada imagen y guardar en la BD el usuario y la si clasificación fue aprobada o no
+        3. Si fue aprobada enviar a la carpeta de Google Drive.
+        
+        '''''''''
         # Consultar todas las imágenes desde la base de datos
         images = Images.query.all()
 
@@ -95,11 +105,126 @@ def getImagesToValidate():
         print('error: ', e)
         return jsonify({'message': 'Error interno del servidor'}), 500
     
-'''''''''''
 
-@save_images_bp.route('/saveValidatedImages', methods=['POST'])
-def saveImages():
+def saveInGoogleDrive(image_base64, image_type, filename):
+    SCOPES = [ 'https://www.googleapis.com/auth/drive' ]         
+    creds = None
+
+    if os.path.exists('token.json'):
+        creds =  Credentials.from_authorized_user_file('token.json', SCOPES)
+    
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+
+        with open('token.json', 'w') as token:
+            token.write(creds.to_json())
+
     try:
+        service = build('drive', 'v3', credentials=creds)
+
+        response = service.files().list(
+            q="name='ImagenesValidadas' and mimeType='application/vnd.google-apps.folder'",
+            spaces='drive'
+        ).execute()
+
+        if not response['files']:
+            file_metadata = {
+                'name' : 'ImagenesValidadas',
+                'mimeType': 'application/vnd.google-apps.folder'
+            }
+
+            file = service.files().create(body=file_metadata, fields='id').execute()
+
+            folder_id = file.get('id')
+
+        else:
+            folder_id = response['files'][0]['id']
+
+        # Map common image types to subtypes
+        image_subtype_mapping = {
+            'jpg': 'jpeg',
+            'jpeg': 'jpeg',
+            'png': 'png',
+            'gif': 'gif'
+        }
+
+        # Get the subtype from the mapping or use the image_type directly
+        subtype = image_subtype_mapping.get(image_type, image_type)
+
+        # Decode base64 string to bytes
+        image_data = base64.b64decode(image_base64)
+
+        # Create a BytesIO object to simulate a file-like object
+        image_stream = BytesIO(image_data)
+
+        # Create a MIMEImage object with the determined subtype
+        mime_image = MIMEImage(image_data, _subtype=subtype)
+
+        # Create a MediaIoBaseUpload instance
+        media = MediaIoBaseUpload(image_stream, mimetype=mime_image.get('Content-Type'))
+
+        # Create file metadata
+        file_metadata = {
+            'name': filename,  # Set the desired file name
+            'parents': [folder_id]
+        }
+
+        # Upload the file
+        upload_file = service.files().create(
+            body=file_metadata,
+            media_body=media,
+            fields="id"
+        ).execute()
+
+        print('Image uploaded successfully.')
+
+    except HttpError as e:
+        print('Error: ' + str(e))
+
+    
+@save_images_bp.route('/saveValidatedImages', methods=['POST'])
+def saveValidatedImages():
+    try:
+
+        user_id = request.form.get('userId')
+
+        uploaded_files_json = request.form.get('files')
+        uploaded_files_list = json.loads(uploaded_files_json)
+        
+        for uploaded_file in uploaded_files_list:
+          
+            print(uploaded_file['id'])
+            # Buscar la imagen existente en la base de datos por su nombre
+            existing_image = Images.query.get(uploaded_file['id'])
+            user = User.query.get(user_id)
+
+            if existing_image:
+                # Actualizar la imagen existente
+                existing_image.is_approved = uploaded_file['isApproved']
+                existing_image.user = user
+
+                # isApproved = 0 -> false
+                # isAprroved = 1 -> true
+                db.session.commit()
+
+                if uploaded_file['isApproved']:
+                    print('va a guardar al drive')
+                    saveInGoogleDrive(uploaded_file['image'], uploaded_file['imageType'], uploaded_file['filename'])
+
+                    
+        return jsonify({'message': 'Las imágenes se editaron exitosamente'}), 200
+
+
+
+        '''''''''
+
+
+
+
 
         SCOPES = [ 'https://www.googleapis.com/auth/drive' ]
           
@@ -157,9 +282,9 @@ def saveImages():
             print('Error: ' + str(e))
        
         return jsonify({'message': 'La imagen se almacenó exitosamente'}), 200
+
+        '''''''''
    
     except Exception as e:
         print('error: ', e)
         return jsonify({'message': 'Error interno del servidor'}), 500
-
-'''''''''''
