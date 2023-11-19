@@ -23,6 +23,8 @@ function ClassifierContent() {
   const {openModal, setOpenModal} = useContext(AppContext);
 
   const inputRef = useRef(null);
+
+  const googleScript ='https://script.google.com/macros/s/AKfycby6n24ROjNPCerPAaRUXtHb2TVrYk4ZoM7xZeaMP9-0aRwJ7M2B6fM8ipfrTmkOHMdD3A/exec';
   
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -46,6 +48,7 @@ function ClassifierContent() {
     const formData = new FormData();
     formData.append('file', image);
     setLoading(true);
+
     fetch('http://127.0.0.1:5000/classifyImage', {
       method: 'POST',
       body: formData,
@@ -55,10 +58,10 @@ function ClassifierContent() {
       console.log(response);
       setpredictedClass(response.predicted_class);
       setProbabilities(response.probabilities);
-
+      setLoading(false);
       // Almacenar imagen para ser valdiada por experto después
       formData.append('classification', response.predicted_class);
-      fetch('http://127.0.0.1:5000/saveImages', {
+      fetch('http://127.0.0.1:5000/saveImagesToValidate', {
         method: 'POST',
         body: formData,
       }).then(() => setLoading(false))
@@ -72,8 +75,10 @@ function ClassifierContent() {
       setshowError(true)
       console.log(err)
     });
+
   }
 
+   
   const resultMessage = (prediction) => {
     let message = 'la papa tiene tizón tardío.'
     if(prediction.toLowerCase().includes('sana')) {

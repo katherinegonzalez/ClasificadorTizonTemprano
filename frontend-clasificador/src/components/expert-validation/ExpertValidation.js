@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
+import { CircularProgress } from '@mui/material';
 
 function Copyright() {
   return (
@@ -33,11 +34,45 @@ function Copyright() {
 // 6. HACER SERVICIO PARA QUE CUANDO EL USUARIO LE DE CLICK EN APROBAR SE VAA DIRECTAMENTE A LA CARPETA DE DRIVE PARA ENTRENAR.
 // 7. 
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-// const cards = [];
-console.log(cards.length > 0);
+
 
 export default function ExpertValidation() {
+
+  const [ cards, setCards ] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+  // const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  // const cards = [];
+  console.log(cards.length > 0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/getImagesToValidate');
+        const result = await response.json();
+        console.log('cards: ', result.images);
+        setCards(result.images);
+      } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+      }
+    };
+
+    fetchData(); // Llamada a la función de fetch al montar el componente
+
+    // Si necesitas realizar alguna acción al desmontar el componente, puedes devolver una función de limpieza
+    return () => {
+      // Código de limpieza aquí si es necesario
+    };
+  }, []);
+
+  
+  const getImageUrl = (image, imageType) => {
+    console.log('image en getImage: ', image);
+    return `data:image/${imageType};base64, ${image}`;
+  }
+
+
   return (
     <>
       <CssBaseline />
@@ -72,38 +107,52 @@ export default function ExpertValidation() {
             }
           </Container>
         </Box>
-        <Container sx={{ py: 4 }} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                >
-                  <CardMedia
-                    component="div"
-                    sx={{
-                      // 16:9
-                      pt: '56.25%',
-                    }}
-                    image="https://source.unsplash.com/random?wallpapers"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Tizón Temprano
-                    </Typography>
-                    <Typography>
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">Aprobar</Button>
-                    <Button color="error" size="small">Rechazar</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+        {!loading &&
+          <Container sx={{ py: 4 }} maxWidth="md">
+            {/* End hero unit */}
+            <Grid container spacing={4}>
+              {cards.map((card) => (
+                <Grid item key={card.id} xs={12} sm={6} md={4}>
+                  <Card
+                    sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                  >
+                    <CardMedia
+                      component="div"
+                      sx={{
+                        // 16:9
+                        pt: '56.25%',
+                      }}
+                      image={getImageUrl(card.image, card.imageType)}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                      {card.classification}
+                      </Typography>
+                      <Typography>
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">Aprobar</Button>
+                      <Button color="error" size="small">Rechazar</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        }
+        {loading &&
+          <Container sx={{ py: 4 }} maxWidth="md">
+            <Box
+              sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              }}>
+              <CircularProgress/> 
+            </Box>
+          </Container>
+        }
       </main>
       {/* Footer */}
       <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
