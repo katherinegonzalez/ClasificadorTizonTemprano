@@ -106,9 +106,12 @@ def getImagesToValidate():
         return jsonify({'message': 'Error interno del servidor'}), 500
     
 
-def saveInGoogleDrive(image_base64, image_type, filename):
+def saveInGoogleDrive(image_base64, image_type, filename, classification):
+    
     SCOPES = [ 'https://www.googleapis.com/auth/drive' ]         
     creds = None
+
+    parent_folder_id = '1BJZ_c8r1Vi2rXMXlin4bxKNaYSZ_E4wf'
 
     if os.path.exists('token.json'):
         creds =  Credentials.from_authorized_user_file('token.json', SCOPES)
@@ -127,14 +130,15 @@ def saveInGoogleDrive(image_base64, image_type, filename):
         service = build('drive', 'v3', credentials=creds)
 
         response = service.files().list(
-            q="name='ImagenesValidadas' and mimeType='application/vnd.google-apps.folder'",
+            q=f"'{parent_folder_id}' in parents and name='Tizon' and mimeType='application/vnd.google-apps.folder'",
             spaces='drive'
         ).execute()
 
         if not response['files']:
             file_metadata = {
-                'name' : 'ImagenesValidadas',
-                'mimeType': 'application/vnd.google-apps.folder'
+                'name' : 'Tizon',
+                'mimeType': 'application/vnd.google-apps.folder',
+                'parents': [parent_folder_id]
             }
 
             file = service.files().create(body=file_metadata, fields='id').execute()
@@ -213,7 +217,7 @@ def saveValidatedImages():
 
                 if uploaded_file['isApproved']:
                     print('va a guardar al drive')
-                    saveInGoogleDrive(uploaded_file['image'], uploaded_file['imageType'], uploaded_file['filename'])
+                    saveInGoogleDrive(uploaded_file['image'], uploaded_file['imageType'], uploaded_file['filename'], uploaded_file['classification'])
 
                     
         return jsonify({'message': 'Las imágenes se editaron exitosamente'}), 200
