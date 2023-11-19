@@ -129,14 +129,22 @@ def saveInGoogleDrive(image_base64, image_type, filename, classification):
     try:
         service = build('drive', 'v3', credentials=creds)
 
+        if "temprano" in classification.lower():
+            folder_name = 'Tizón Temprano'
+        elif 'sana' in classification.lower():
+            folder_name = 'Papa Sana'
+        else: # Tizón Tardío
+            folder_name = 'Tizón Tardío'
+
+
         response = service.files().list(
-            q=f"'{parent_folder_id}' in parents and name='Tizon' and mimeType='application/vnd.google-apps.folder'",
+            q=f"'{parent_folder_id}' in parents and name='{folder_name}' and mimeType='application/vnd.google-apps.folder'",
             spaces='drive'
         ).execute()
 
         if not response['files']:
             file_metadata = {
-                'name' : 'Tizon',
+                'name' : folder_name,
                 'mimeType': 'application/vnd.google-apps.folder',
                 'parents': [parent_folder_id]
             }
