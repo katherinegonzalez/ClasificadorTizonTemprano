@@ -26,21 +26,16 @@ function Copyright() {
   );
 }
 
-
 export default function ExpertValidation() {
 
   const [ cards, setCards ] = useState([]);
   const [loading, setLoading] = useState(true);
   const { setShowError } = useContext(AppContext);
 
-
-  // const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  // const cards = [];
-  console.log(cards.length > 0);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log('entra');
         const response = await fetch('http://127.0.0.1:5000/getImagesToValidate');
         const result = await response.json();
         console.log('cards: ', result.images);
@@ -52,19 +47,41 @@ export default function ExpertValidation() {
         setLoading(false);
       }
     };
-
-    fetchData(); 
-  });
+    if (cards.length === 0) {
+      fetchData(); 
+    }
+  }, []);
 
   const getImageUrl = (image, imageType) => {
-    console.log('image en getImage: ', image);
     return `data:image/${imageType};base64, ${image}`;
   }
+
+  const onValidateClassification = ({imageId, isApprove}) => {
+
+    const validatedCardsList = cards.map(image => {
+      if (imageId === image.id)  {
+
+        if (image.isApprove === isApprove) {
+          image.isApprove = null;
+        } else {
+          image.isApprove = isApprove; 
+        }
+      }
+      return image;
+    });
+    console.log('validatedCardsList: ', validatedCardsList);
+    setCards(validatedCardsList);
+  }
+
 
   return (
     <>
       <CssBaseline />
-      <main>
+      <main style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: 'calc(100vh - 64px)'
+      }}>
         {/* Hero unit */}
         <Box
           sx={{
@@ -83,12 +100,12 @@ export default function ExpertValidation() {
             >
               ¡Ayudanos a Mejorar!
             </Typography>
-            {cards.length ===0 && 
+            {cards.length === 0 && !loading &&
              <Typography variant="h5" align="center" color="text.secondary" paragraph>
              ¡Gracias por tu interés en ayudarnos! En este momento, no contamos con imágenes para que valides su clasificación. Pero no te preocupes, ¡vuelve a revisar más tarde! Tu contribución es muy apreciada.
             </Typography>
             }
-            {cards.length >0 && 
+            {cards.length > 0 && !loading &&
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
                 A continuación, te presentamos una lista de imágenes clasificadas por nuestra increíble inteligencia artificial. Por favor, aprueba si crees que la clasificación es correcta según tus conocimientos, o rechaza si piensas lo contrario. Tu ayuda es invaluable. ¡Gracias por ser parte de nuestro equipo!
             </Typography>
@@ -109,36 +126,96 @@ export default function ExpertValidation() {
                       sx={{
                         // 16:9
                         pt: '56.25%',
+                        position: 'relative'
                       }}
-                      image={getImageUrl(card.image, card.imageType)}
-                    />
+                      image={getImageUrl(card.image, card.imageType)}>
+
+                      { card.isApprove !== undefined && card.isApprove !== null &&
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            height: "100%",
+                            width: '100%',
+                            backgroundColor: 'black',
+                            opacity: 0.7,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            top: 0
+                          }}>
+                            <Typography 
+                              variant='h5' 
+                              color='white'
+                              sx={{
+                                fontWeight: 'bolder'
+                              }}>
+                              {card.isApprove ? 'Clasificación Aprobada': 'Clasificación Rechazada'}
+                            </Typography>
+                        </Box>
+                      }   
+                    </CardMedia>
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography gutterBottom variant="h5" component="h2">
                       {card.classification}
                       </Typography>
-                      <Typography>
-                      </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button size="small">Aprobar</Button>
-                      <Button color="error" size="small">Rechazar</Button>
+                      <Button 
+                        size="small" 
+                        sx={  {
+                          backgroundColor: card.isApprove ? '#4caf504d' : ''
+                        }}
+                        onClick={() => {onValidateClassification({imageId: card.id, isApprove: true})}}>
+                        Aprobar</Button>
+                      <Button 
+                        color="error" 
+                        size="small"
+                        sx={ {
+                           backgroundColor: card.isApprove === false ? '#d32f2f40' : ''
+                        }}
+                        onClick={() => {onValidateClassification({imageId: card.id, isApprove: false})}}>
+                          Rechazar</Button>
                     </CardActions>
                   </Card>
                 </Grid>
               ))}
             </Grid>
+            <Box  
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                }}>
+
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 3, mb: 2, width: '50%' }}>
+              Guardar y Enviar
+            </Button>
+
+            </Box>
+           
           </Container>
         }
         {loading &&
-          <Container maxWidth="md">
-            <Box
-              sx={{
+          <Container maxWidth="md"
+             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               flex: 1
               }}>
-              <CircularProgress/> 
+            <Box
+              sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1
+              }}>
+              <CircularProgress /> 
             </Box>
             <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
               <Copyright />
