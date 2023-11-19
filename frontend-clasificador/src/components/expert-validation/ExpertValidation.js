@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { CircularProgress } from '@mui/material';
+import { AppContext } from '../../context';
 
 function Copyright() {
   return (
@@ -27,19 +28,12 @@ function Copyright() {
   );
 }
 
-// TODO: 
-// 1. CREAR SERVICIO PARA ALMACENAR IMAGENES EN DRIVE EN UNA CARPETA y EN LA BD almacenar la ruta y un campo booleano para saber si se fue o no aprobada
-// 3. CREAR SERVICIO PARA RETORNAR IMAGENES ALMACENADAS
-// 5. HACER PETICIÓN AL SERVIDOR PARA TRAER LAS IMAGENES
-// 6. HACER SERVICIO PARA QUE CUANDO EL USUARIO LE DE CLICK EN APROBAR SE VAA DIRECTAMENTE A LA CARPETA DE DRIVE PARA ENTRENAR.
-// 7. 
-
-
 
 export default function ExpertValidation() {
 
   const [ cards, setCards ] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { setShowError } = useContext(AppContext);
 
 
   // const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -53,25 +47,21 @@ export default function ExpertValidation() {
         const result = await response.json();
         console.log('cards: ', result.images);
         setCards(result.images);
+        setLoading(false);
       } catch (error) {
         console.error('Error al realizar la solicitud:', error);
+        setShowError(true);
+        setLoading(false);
       }
     };
 
-    fetchData(); // Llamada a la función de fetch al montar el componente
+    fetchData(); 
+  });
 
-    // Si necesitas realizar alguna acción al desmontar el componente, puedes devolver una función de limpieza
-    return () => {
-      // Código de limpieza aquí si es necesario
-    };
-  }, []);
-
-  
   const getImageUrl = (image, imageType) => {
     console.log('image en getImage: ', image);
     return `data:image/${imageType};base64, ${image}`;
   }
-
 
   return (
     <>
@@ -142,23 +132,29 @@ export default function ExpertValidation() {
           </Container>
         }
         {loading &&
-          <Container sx={{ py: 4 }} maxWidth="md">
+          <Container maxWidth="md">
             <Box
               sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              flex: 1
               }}>
               <CircularProgress/> 
+            </Box>
+            <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+              <Copyright />
             </Box>
           </Container>
         }
       </main>
-      {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-        <Copyright />
-      </Box>
-      {/* End footer */}
+     
+      { !loading && 
+        <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+          <Copyright />
+        </Box>
+      }
+      
     </>
   );
 }
