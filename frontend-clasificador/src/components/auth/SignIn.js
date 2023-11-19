@@ -34,12 +34,21 @@ function Copyright(props) {
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
-  const {isAuth, setIsAuth} = useContext(AppContext);
+  const { setIsAuth} = useContext(AppContext);
+  const { setShowError} = useContext(AppContext);
+  const [errors, setErrors] = useState({});
   
   const navigate = useNavigate();
 
   
   const [rememberMe, setRememberMe] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // Actualizar el estado de los errores para quitar el error cuando se escribe en el campo
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: !value }));
+  };
+
   const handleCheckboxChange = (event) => {
     setRememberMe(event.target.checked);
   };
@@ -54,30 +63,47 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     };
-    console.log(formData);
+    
+    const newErrors = {
+      email: !data.get('email'),
+      password: !data.get('password'),
+    };
 
-    fetch('http://127.0.0.1:5000/login', {
-      method: 'POST',
-      body:  JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json', // Establece el tipo de contenido como JSON
-      },
-    })
-    .then(response => response.json()) 
-    .then(response => {
-      console.log(response);
-      setLoading(false);
-      setSessionID(response.token, rememberMe);
-      setIsAuth(true);
-      navigate('/validacion-experto');
-    })
-    .catch(err => {
+    // Actualizar estado con errores
+    setErrors(newErrors);
+
+    // Si todos los campos requeridos están llenos, continúa con el envío
+    if (!Object.values(newErrors).some((error) => error)) {
+        fetch('http://127.0.0.1:5000/login', {
+        method: 'POST',
+        body:  JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json', // Establece el tipo de contenido como JSON
+        },
+      })
+      .then(response => response.json()) 
+      .then(response => {
+        console.log(response);
+        if (response.token) {
+          setSessionID(response.token, rememberMe);
+          setIsAuth(true);
+          navigate('/validacion-experto');
+        } else {
+          setShowError(true)
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setIsAuth(false);
+        setShowError(true)
+        console.log(err)
+      });
+    } else {
       setLoading(false);
       setIsAuth(false);
-      // setshowError(true)
-      console.log(err)
-    });
-
+      setShowError(true)
+    }
 
   };
 
@@ -110,6 +136,9 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            error={errors.email}
+            helperText={errors.email && "Este campo es obligatorio"}
+            onChange={handleChange}
         />
         <TextField
             margin="normal"
@@ -120,6 +149,9 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            error={errors.password}
+            helperText={errors.password && "Este campo es obligatorio"}
+            onChange={handleChange}
         />
         <FormControlLabel
             control={<Checkbox value="remember" color="primary" checked={rememberMe} onChange={handleCheckboxChange}/>}

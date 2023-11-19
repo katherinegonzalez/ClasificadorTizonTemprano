@@ -11,15 +11,16 @@ import ExpertValidation from './components/expert-validation/ExpertValidation';
 import ProtectedRoutes from './components/auth/protected-routes/ProtectedRoutes';
 import LoginRoute from './components/auth/login-route/LoginRoute';
 import { isAuthenticated } from './components/auth/session';
+import Error from './components/error/Error';
 
 function App() {   
   const [openModal, setOpenModal] = useState(false);
   const [isAuth, setIsAuth] = useState(isAuthenticated());
-
+  const [showError, setShowError] = useState(false);
 
   return (
     <BrowserRouter>
-    <AppContext.Provider value={{openModal, setOpenModal, isAuth, setIsAuth}}>
+    <AppContext.Provider value={{openModal, setOpenModal, isAuth, setIsAuth, showError, setShowError}}>
     <MenuBar></MenuBar>
     <Routes>
       <Route path="/" element={<Classifier />} />
@@ -32,6 +33,7 @@ function App() {
       <Route path="/sobre-nosotros" element={<About />} />
       <Route path="/registro" element={<SignUp />} />
     </Routes>
+    <Error></Error>
     </AppContext.Provider>
     </BrowserRouter>
   );

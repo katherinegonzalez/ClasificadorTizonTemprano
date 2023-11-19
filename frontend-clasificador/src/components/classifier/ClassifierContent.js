@@ -19,8 +19,8 @@ function ClassifierContent() {
   const [predictedClass, setpredictedClass] = useState('');
   const [probabilities, setProbabilities] = useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [showError, setshowError] = React.useState(false);
   const {openModal, setOpenModal} = useContext(AppContext);
+  const { showError, setShowError } = useContext(AppContext);
 
   const inputRef = useRef(null);
 
@@ -72,7 +72,7 @@ function ClassifierContent() {
     })
     .catch(err => {
       setLoading(false);
-      setshowError(true)
+      setShowError(true)
       console.log(err)
     });
 
@@ -93,7 +93,7 @@ function ClassifierContent() {
     if (reason === 'clickaway') {
       return;
     }
-    setshowError(false);
+    setShowError(false);
   };
 
   return (

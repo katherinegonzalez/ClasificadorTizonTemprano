@@ -32,14 +32,24 @@ function Copyright(props) {
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
-  const {isAuth, setIsAuth} = useContext(AppContext);
+  const { setIsAuth } = useContext(AppContext);
+  const { setShowError } = useContext(AppContext);
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
-  const signUpURL = 'http://127.0.0.1:5000/registro'
+  const signUpURL = 'http://127.0.0.1:5000/registro';
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // Actualizar el estado de los errores para quitar el error cuando se escribe en el campo
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: !value }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
+
     const data = new FormData(event.currentTarget);
     const formData = {
       name: data.get('name'),
@@ -48,28 +58,50 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     };
-    console.log(formData);
+  
+    const newErrors = {
+      name: !data.get('name'),
+      lastname: !data.get('lastname'),
+      occupation: !data.get('occupation'),
+      email: !data.get('email'),
+      password: !data.get('password'),
+    };
 
-    fetch('http://127.0.0.1:5000/registro', {
-      method: 'POST',
-      body:  JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json', // Establece el tipo de contenido como JSON
-      },
-    })
-    .then(response => response.json()) 
-    .then(response => {
-      console.log(response);
-      setSessionID(response.token);
-      setIsAuth(true);
-      navigate('/validacion-experto');
+    // Actualizar estado con errores
+    setErrors(newErrors);
+
+    // Si todos los campos requeridos están llenos, continúa con el envío
+    if (!Object.values(newErrors).some((error) => error)) {
+
+      fetch('http://127.0.0.1:5000/registro', {
+        method: 'POST',
+        body:  JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json', // Establece el tipo de contenido como JSON
+        },
+      })
+      .then(response => response.json()) 
+      .then(response => {
+        console.log(response);
+        if (response.token) {
+          setSessionID(response.token);
+          setIsAuth(true);
+          navigate('/validacion-experto');
+        } else {
+          setShowError(true)
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setShowError(true);
+        console.log(err)
+      });
+
+    } else {
+      setShowError(true);
       setLoading(false);
-    })
-    .catch(err => {
-      setLoading(false);
-      // setshowError(true)
-      console.log(err)
-    });
+    }
   };
 
 
@@ -104,6 +136,9 @@ export default function SignUp() {
                 id="firstName"
                 label="Nombre"
                 autoFocus
+                error={errors.name}
+                helperText={errors.name && "Este campo es obligatorio"}
+                onChange={handleChange}
             />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -114,6 +149,9 @@ export default function SignUp() {
                 label="Apellido"
                 name="lastname"
                 autoComplete="family-name"
+                error={errors.lastname}
+                helperText={errors.lastname && "Este campo es obligatorio"}
+                onChange={handleChange}
             />
             </Grid>
             <Grid item xs={12}>
@@ -124,6 +162,9 @@ export default function SignUp() {
                 label="Ocupación"
                 name="occupation"
                 autoComplete="occupation"
+                error={errors.occupation}
+                helperText={errors.occupation && "Este campo es obligatorio"}
+                onChange={handleChange}
             />
             </Grid>
             <Grid item xs={12}>
@@ -134,6 +175,9 @@ export default function SignUp() {
                 label="Email"
                 name="email"
                 autoComplete="email"
+                error={errors.email}
+                helperText={errors.email && "Este campo es obligatorio"}
+                onChange={handleChange}
             />
             </Grid>
             <Grid item xs={12}>
@@ -145,6 +189,9 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                error={errors.password}
+                helperText={errors.password && "Este campo es obligatorio"}
+                onChange={handleChange}
             />
             </Grid>
             <Grid item xs={12}>

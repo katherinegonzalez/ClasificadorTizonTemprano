@@ -1,29 +1,30 @@
 const COOKIE_NAME = 'SESSSION_TOKEN';
 
 export const setSessionID = (token, rememberMe = false) =>  {
-    const COOKIE_VALUE = token;
-    console.log('rememberMe: ', rememberMe);
-
-    if (rememberMe) {
-        // Define la duración de la cookie en días (opcional)
-        const dueDays = 7;
-
-        // Calcula la fecha de vencimiento
-        const dueDate = new Date();
-        dueDate.setTime(dueDate.getTime() + (dueDays * 24 * 60 * 60 * 1000));
-
-        // Convierte la fecha de vencimiento a una cadena en formato UTC
-        const dueDateString = dueDate.toUTCString();
-
-        // Crea la cookie con el nombre, valor y fecha de vencimiento
-        document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; expires=${dueDateString}; path=/`;
-    } else {
-
-        // Crea la cookie con el nombre, valor y fecha de vencimiento
-        document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; path=/`;
-
-    }
+    if (token) {
+        const COOKIE_VALUE = token;
+        console.log('rememberMe: ', rememberMe);
     
+        if (rememberMe) {
+            // Define la duración de la cookie en días (opcional)
+            const dueDays = 7;
+    
+            // Calcula la fecha de vencimiento
+            const dueDate = new Date();
+            dueDate.setTime(dueDate.getTime() + (dueDays * 24 * 60 * 60 * 1000));
+    
+            // Convierte la fecha de vencimiento a una cadena en formato UTC
+            const dueDateString = dueDate.toUTCString();
+    
+            // Crea la cookie con el nombre, valor y fecha de vencimiento
+            document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; expires=${dueDateString}; path=/`;
+        } else {
+    
+            // Crea la cookie con el nombre, valor y fecha de vencimiento
+            document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; path=/`;
+    
+        }
+    }     
 }
 
 export const deleteCookie = () => {
