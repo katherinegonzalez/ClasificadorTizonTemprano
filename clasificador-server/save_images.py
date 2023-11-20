@@ -71,16 +71,8 @@ def saveImagesToValidate():
 @save_images_bp.route('/getImagesToValidate', methods=['GET'])
 def getImagesToValidate():
     try:
-
-        '''''''''
-        TODO:  
-        1. Investigar como recibir un array con varias imagenes
-        2. Tomar cada imagen y guardar en la BD el usuario y la si clasificación fue aprobada o no
-        3. Si fue aprobada enviar a la carpeta de Google Drive.
-        
-        '''''''''
-        # Consultar todas las imágenes desde la base de datos
-        images = Images.query.all()
+        # Consultar solo las imágenes con is_approved igual a null
+        images = Images.query.filter(Images.is_approved == None).all()
 
         # Crear una lista para almacenar los datos de cada imagen
         images_data = []
