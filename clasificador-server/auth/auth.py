@@ -28,7 +28,7 @@ def login():
         token = jwt.encode({'user': email}, current_app.config['SECRET_KEY'], algorithm='HS256')
         return jsonify({'token': token}), 200
     else:
-        return jsonify({'message': 'Error de autenticación'}), 401
+        return jsonify({'message': 'Password Incorrecto'}), 401
 
 # Ruta de registro
 @auth_bp.route('/registro', methods=['POST'])

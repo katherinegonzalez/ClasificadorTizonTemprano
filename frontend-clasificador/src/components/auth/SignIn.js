@@ -35,7 +35,7 @@ function Copyright(props) {
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const { setIsAuth} = useContext(AppContext);
-  const { setShowMessage } = useContext(AppContext);
+  const { setShowMessage, setMessage } = useContext(AppContext);
   const [errors, setErrors] = useState({});
   
   const navigate = useNavigate();
@@ -53,12 +53,10 @@ export default function SignIn() {
     setRememberMe(event.target.checked);
   };
   
-
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
     const data = new FormData(event.currentTarget);
-    console.log('remember:', event.target.elements);
     const formData = {
       email: data.get('email'),
       password: data.get('password'),
@@ -89,7 +87,11 @@ export default function SignIn() {
           setIsAuth(true);
           navigate('/validacion-experto');
         } else {
-          setShowMessage(true)
+          setShowMessage(true);
+
+          if (response.message) {
+            setMessage(response.message);
+          }
         }
         setLoading(false);
       })
