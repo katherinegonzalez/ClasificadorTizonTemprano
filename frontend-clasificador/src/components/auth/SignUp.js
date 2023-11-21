@@ -33,7 +33,7 @@ function Copyright(props) {
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const { setIsAuth } = useContext(AppContext);
-  const { setShowMessage } = useContext(AppContext);
+  const { setShowMessage, setMessage, setMessageType } = useContext(AppContext);
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
@@ -57,6 +57,7 @@ export default function SignUp() {
       occupation: data.get('occupation'),
       email: data.get('email'),
       password: data.get('password'),
+      signupkey: data.get('signupkey')
     };
   
     const newErrors = {
@@ -65,6 +66,7 @@ export default function SignUp() {
       occupation: !data.get('occupation'),
       email: !data.get('email'),
       password: !data.get('password'),
+      signupkey: !data.get('signupkey')
     };
 
     // Actualizar estado con errores
@@ -87,9 +89,14 @@ export default function SignUp() {
           setSessionID(response.token);
           setIsAuth(true);
           navigate('/validacion-experto');
+          setMessage('¡Registro Exitoso!');
+          setMessageType('success');
         } else {
-          setShowMessage(true)
+          if (response.message) {
+            setMessage(response.message);
+          }
         }
+        setShowMessage(true);
         setLoading(false);
       })
       .catch(err => {
@@ -214,10 +221,18 @@ export default function SignUp() {
               />
               </Grid>
               <Grid item xs={12}>
-              <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-              />
+                <TextField
+                    required
+                    fullWidth
+                    name="signupkey"
+                    label="Token de Registro"
+                    type="password"
+                    id="signupkey"
+                    autoComplete="signupkey"
+                    error={errors.signupkey}
+                    helperText={errors.signupkey && "Este campo es obligatorio"}
+                    onChange={handleChange}
+                />
               </Grid>
           </Grid>
           <Button

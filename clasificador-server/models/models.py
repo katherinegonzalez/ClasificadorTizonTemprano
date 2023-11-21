@@ -2,6 +2,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+class Expert(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True, nullable=False)
+    signup_key = db.Column(db.String(80), unique=True, nullable=False)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True, nullable=False)
     name = db.Column(db.String(80), nullable=False)

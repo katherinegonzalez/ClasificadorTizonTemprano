@@ -76,7 +76,7 @@ export default function SignIn() {
         method: 'POST',
         body:  JSON.stringify(formData),
         headers: {
-          'Content-Type': 'application/json', // Establece el tipo de contenido como JSON
+          'Content-Type': 'application/json',
         },
       })
       .then(response => response.json()) 
@@ -87,11 +87,10 @@ export default function SignIn() {
           setIsAuth(true);
           navigate('/validacion-experto');
         } else {
-          setShowMessage(true);
-
           if (response.message) {
             setMessage(response.message);
           }
+          setShowMessage(true);
         }
         setLoading(false);
       })
