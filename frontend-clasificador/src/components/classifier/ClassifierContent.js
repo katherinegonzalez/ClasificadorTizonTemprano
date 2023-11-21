@@ -1,12 +1,11 @@
 import React, { useState, useRef, useContext } from 'react';
-import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Alert, Box, Button, CircularProgress, IconButton, Snackbar } from '@mui/material';
+import { Box, Button, CircularProgress, IconButton } from '@mui/material';
 import { AppContext } from '../../context';
 import ResultModal from '../result-modal/ResultModal';
 import CloseIcon from '@mui/icons-material/Close';
@@ -19,8 +18,8 @@ function ClassifierContent() {
   const [predictedClass, setpredictedClass] = useState('');
   const [probabilities, setProbabilities] = useState([]);
   const [loading, setLoading] = React.useState(false);
-  const {openModal, setOpenModal} = useContext(AppContext);
-  const { showError, setShowError } = useContext(AppContext);
+  const { setOpenModal} = useContext(AppContext);
+  const { setShowMessage } = useContext(AppContext);
 
   const inputRef = useRef(null);
 
@@ -72,7 +71,7 @@ function ClassifierContent() {
     })
     .catch(err => {
       setLoading(false);
-      setShowError(true)
+      setShowMessage(true)
       console.log(err)
     });
 
@@ -93,7 +92,7 @@ function ClassifierContent() {
     if (reason === 'clickaway') {
       return;
     }
-    setShowError(false);
+    setShowMessage(false);
   };
 
   return (
@@ -205,12 +204,6 @@ function ClassifierContent() {
           predictedClass={predictedClass}
           probabilities={probabilities}
         />
-
-      <Snackbar open={showError} autoHideDuration={6000} onClose={handleCloseError}>
-        <Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
-          Ocurrió un error! Vuelva a intentarlo.
-        </Alert>
-      </Snackbar>
     </Grid>
   );
 }

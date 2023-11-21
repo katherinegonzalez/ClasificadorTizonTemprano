@@ -5,6 +5,10 @@ export const AppContext = createContext({
     setopenModal: () => {},  
     isAuth: false,
     setIsAuth: ()  => {},
-    showError: false,
-    setShowError: () => {}
+    showMessage: false, 
+    setShowMessage: () => {}, 
+    messageType: 'error',
+    setMessageType: () => {}, 
+    message: 'Ocurrió un error! Vuelva a intentarlo.',
+    setMessage: () => {}
   });

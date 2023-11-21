@@ -31,7 +31,7 @@ export default function ExpertValidation() {
   const [ cards, setCards ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const [ isValidationDone, setIsValidationDone ] = useState(false);
-  const { setShowError } = useContext(AppContext);
+  const { setShowMessage, setMessage, setMessageType } = useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,14 +44,14 @@ export default function ExpertValidation() {
         setLoading(false);
       } catch (error) {
         console.error('Error al realizar la solicitud:', error);
-        setShowError(true);
+        setShowMessage(true);
         setLoading(false);
       }
     };
     if (cards.length === 0 || !isValidationDone) {
       fetchData(); 
     }
-  }, [isValidationDone, cards.length, setShowError]);
+  }, [isValidationDone, cards.length, setShowMessage]);
 
   const getImageUrl = (image, imageType) => {
     return `data:image/${imageType};base64, ${image}`;
@@ -78,7 +78,10 @@ export default function ExpertValidation() {
     const validatedImagesList = cards.filter(image =>image.isApproved !==null && image.isApproved !==undefined);
 
     if (validatedImagesList.length === 0) {
-
+      setShowMessage(true);
+      setMessage('¡Ups! Parece que aún no has realizado ninguna validación.' + 
+        'Valida una imagen para continuar');
+      setMessageType('warning');
     } else {
       setLoading(true);
 
@@ -96,12 +99,12 @@ export default function ExpertValidation() {
         if (response.status === 200) {
           setIsValidationDone(true);
         } else {
-          setShowError(true);
+          setShowMessage(true);
         }
         setLoading(false);  
       })
       .catch(err => {
-        setShowError(true);
+        setShowMessage(true);
         setLoading(false);
       });
     }

@@ -33,7 +33,7 @@ function Copyright(props) {
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const { setIsAuth } = useContext(AppContext);
-  const { setShowError } = useContext(AppContext);
+  const { setShowMessage } = useContext(AppContext);
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
@@ -88,18 +88,18 @@ export default function SignUp() {
           setIsAuth(true);
           navigate('/validacion-experto');
         } else {
-          setShowError(true)
+          setShowMessage(true)
         }
         setLoading(false);
       })
       .catch(err => {
         setLoading(false);
-        setShowError(true);
+        setShowMessage(true);
         console.log(err)
       });
 
     } else {
-      setShowError(true);
+      setShowMessage(true);
       setLoading(false);
     }
   };
