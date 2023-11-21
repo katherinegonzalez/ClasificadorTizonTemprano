@@ -80,7 +80,7 @@ export default function ExpertValidation() {
     if (validatedImagesList.length === 0) {
       setShowMessage(true);
       setMessage('¡Ups! Parece que aún no has realizado ninguna validación.' + 
-        'Valida una imagen para continuar');
+        'Valida al menos una imagen para continuar.');
       setMessageType('warning');
     } else {
       setLoading(true);
