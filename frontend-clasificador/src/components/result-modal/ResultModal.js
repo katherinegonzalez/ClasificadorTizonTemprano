@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import React, { useContext } from 'react';
 import { AppContext } from '../../context';
+import { Box, CardMedia } from '@mui/material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -30,11 +31,12 @@ function ResultModal ({
   };
 
   const etiquetas =  {
-    0: 'Papa Sana',
-    1: 'Tizón Tardío',
-    2: 'Tizón Temprano' 
+    0: 'Probabilidad de que la hoja sea de una Papa Sana es de: ',
+    1: 'Probabilidad de que la hoja tenga Tizón Tardío es de: ',
+    2: 'Probabilidad de que la hoja tenga Tizón Temprano es de: ' 
   };
 
+  console.log('probabilities');
   return (
       <BootstrapDialog
         onClose={handleClose}
@@ -56,22 +58,40 @@ function ResultModal ({
         >
           <CloseIcon />
         </IconButton>
-        <DialogContent dividers>
-          <div className='result_classification-image'>
-            <img src={image} alt="default" />
-            <br />
-            <h3>
-            Resultado de la Clasificación: {predictedClass}
-            </h3>
-          </div>
-          <br />
-          <h4>Probabilidades:</h4>
-          <br />
-            <ul>
-              {probabilities.map((probability, index) =>
-                <li key={probability}> <strong>{etiquetas[index]}:</strong>{probability}</li>
-              )}
-            </ul>
+        <DialogContent dividers >
+         
+          <Box sx={{
+            py: 2,
+            px: 4
+          }}>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column'
+            }}>
+            <CardMedia
+              component="img"
+              sx={{ width: 220, height: 220, borderRadius: '5px' }}
+              image={image}
+              alt={'default'}
+            />
+            <Typography variant="h5" align="center" sx= {{ m: 2}}>
+              {predictedClass}
+            </Typography>
+            </Box>
+            <Typography  sx= {{ m: 2}}>
+              Nuestro sistema de inteligencia artificial ha evaluado la imagen de la hoja y ha determinado el resultado basándose en el porcentaje más alto. 
+            </Typography>
+            <Typography  sx= {{ m: 2}}>
+              Aquí está la clasificación resultante:
+            </Typography>
+
+            {probabilities.map((probability, index) =>
+              <Typography  key={probability} sx= {{ m: 2}}>
+              <strong>{etiquetas[index]}</strong>{`${(probability*100).toFixed(2)}%`}
+              </Typography>
+            )}
+          </Box>
         </DialogContent>
       </BootstrapDialog>
   );

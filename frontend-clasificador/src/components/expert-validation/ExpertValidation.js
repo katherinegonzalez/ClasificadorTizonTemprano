@@ -29,7 +29,8 @@ function Copyright() {
 export default function ExpertValidation() {
 
   const [ cards, setCards ] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [ loading, setLoading ] = useState(true);
+  const [ isValidationDone, setIsValidationDone ] = useState(false);
   const { setShowError } = useContext(AppContext);
 
   useEffect(() => {
@@ -47,10 +48,10 @@ export default function ExpertValidation() {
         setLoading(false);
       }
     };
-    if (cards.length === 0) {
+    if (cards.length === 0 || !isValidationDone) {
       fetchData(); 
     }
-  }, []);
+  }, [isValidationDone, cards.length, setShowError]);
 
   const getImageUrl = (image, imageType) => {
     return `data:image/${imageType};base64, ${image}`;
@@ -74,45 +75,51 @@ export default function ExpertValidation() {
   }
 
   const onSaveValidation = () => {
-    const formData = new FormData();
-    /*cards.forEach((image, index) => {
-      console.log('image: ', image);
-      formData.append(`files[${index}]`, image);
-      // formData.append(`files[${index}].isApproved`, image.isApproved);
-      // formData.append(`files[${index}].id`, image.id);
-    });*/
     const validatedImagesList = cards.filter(image =>image.isApproved !==null && image.isApproved !==undefined);
-    console.log('validatedImagesList: ', validatedImagesList);
 
-    formData.append('userId', 6);
+    if (validatedImagesList.length === 0) {
 
+    } else {
+      setLoading(true);
 
-    formData.append('files', JSON.stringify(validatedImagesList));
+      const formData = new FormData();
+      
+      formData.append('userId', 6);
+      formData.append('files', JSON.stringify(validatedImagesList));
 
-
-    fetch('http://127.0.0.1:5000/saveValidatedImages', {
+      fetch('http://127.0.0.1:5000/saveValidatedImages', {
       method: 'POST',
       body: formData,
-    }).then((response) => {
-      console.log('respuesta: ', response);
-      setLoading(false)
-    })
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setIsValidationDone(true);
+        } else {
+          setShowError(true);
+        }
+        setLoading(false);  
+      })
       .catch(err => {
-        console.log(err);
+        setShowError(true);
         setLoading(false);
       });
+    }
   }
 
+  const onBackButton = () => {
+    setLoading(true);
+    setIsValidationDone(false);
+  }
 
   return (
     <>
       <CssBaseline />
-      <main style={{
+      <main style={ loading ? {
         display: 'flex',
         flexDirection: 'column',
         height: 'calc(100vh - 64px)'
-      }}>
-        {/* Hero unit */}
+      } : {}}>
         <Box
           sx={{
             bgcolor: 'background.paper',
@@ -128,23 +135,32 @@ export default function ExpertValidation() {
               color="text.primary"
               gutterBottom
             >
-              ¡Ayudanos a Mejorar!
+              { !isValidationDone && '¡Ayudanos a Mejorar!'}
+              { isValidationDone && !loading && '¡Gracias por tu Aporte!'}
             </Typography>
-            {cards.length === 0 && !loading &&
+            {cards.length === 0 && !loading && !isValidationDone && 
              <Typography variant="h5" align="center" color="text.secondary" paragraph>
              ¡Gracias por tu interés en ayudarnos! En este momento, no contamos con imágenes para que valides su clasificación. Pero no te preocupes, ¡vuelve a revisar más tarde! Tu contribución es muy apreciada.
             </Typography>
             }
-            {cards.length > 0 && !loading &&
+            {cards.length > 0 && !loading && !isValidationDone && 
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
                 A continuación, te presentamos una lista de imágenes clasificadas por nuestra increíble inteligencia artificial. Por favor, aprueba si crees que la clasificación es correcta según tus conocimientos, o rechaza si piensas lo contrario. Tu ayuda es invaluable. ¡Gracias por ser parte de nuestro equipo!
             </Typography>
             }
+            { isValidationDone && !loading && 
+              <Box
+              sx={{ pt: 4, display: 'flex' }}
+              direction="row"
+              spacing={2}
+              justifyContent="center">
+                <Button variant="contained" onClick={()=>{ onBackButton()}}>Volver</Button>
+              </Box>
+            }
           </Container>
         </Box>
-        {!loading &&
+        {!loading && !isValidationDone && 
           <Container sx={{ py: 4 }} maxWidth="md">
-            {/* End hero unit */}
             <Grid container spacing={4}>
               {cards.map((card) => (
                 <Grid item key={card.id} xs={12} sm={6} md={4}>
@@ -177,7 +193,8 @@ export default function ExpertValidation() {
                               variant='h5' 
                               color='white'
                               sx={{
-                                fontWeight: 'bolder'
+                                fontWeight: 'bolder',
+                                textAlign: 'center'
                               }}>
                               {card.isApproved ? 'Clasificación Aprobada': 'Clasificación Rechazada'}
                             </Typography>
@@ -210,24 +227,23 @@ export default function ExpertValidation() {
                 </Grid>
               ))}
             </Grid>
-            <Box  
-              sx={{
+            { cards.length > 0 && 
+              <Box  
+                sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 }}>
-
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              onClick={()=> {onSaveValidation()}}
-              sx={{ mt: 3, mb: 2, width: '50%' }}>
-              Guardar y Enviar
-            </Button>
-
-            </Box>
-           
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  onClick={()=> {onSaveValidation()}}
+                  sx={{ mt: 3, mb: 2, width: '50%' }}>
+                  Guardar y Enviar
+                </Button>
+              </Box>
+            }
           </Container>
         }
         {loading &&

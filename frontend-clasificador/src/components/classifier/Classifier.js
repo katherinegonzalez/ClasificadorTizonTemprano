@@ -60,14 +60,10 @@ function Classifier() {
         }
         { shouldShowClassifier && 
             <Container sx={{ py: 8 }} maxWidth="md">
-                <ClassifierContent></ClassifierContent>
-                
+                <ClassifierContent></ClassifierContent>  
             </Container> 
-
         }
-
-      </main>
-     
+      </main>     
     );
   }
   

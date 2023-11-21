@@ -11,7 +11,6 @@ class User(db.Model):
     email = db.Column(db.String(80), nullable=False, unique=True) 
     images = db.relationship('Images', backref='user', lazy=True)
 
-
 class Images(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True, nullable=False)
     image = db.Column(db.LargeBinary(), nullable=False)

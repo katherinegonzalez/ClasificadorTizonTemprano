@@ -56,7 +56,7 @@ def saveImagesToValidate():
             image_type = imghdr.what(None, h=imagen_data)
 
         # Crear una instancia de la clase Images y guardarla en la base de datos
-        new_image = Images(name= filename, image=imagen_data, classification=classification, image_type=image_type, user_id=0)
+        new_image = Images(name= filename, image=imagen_data, classification=classification, image_type=image_type, user_id=1)
         db.session.add(new_image)
         db.session.commit()
        
@@ -86,7 +86,6 @@ def getImagesToValidate():
                 'classification': image.classification,
                 'image': image_base64,
                 'imageType': image.image_type
-                # Puedes agregar más campos según sea necesario
             }
             images_data.append(image_data)
 
