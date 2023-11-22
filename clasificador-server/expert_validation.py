@@ -1,11 +1,23 @@
 from flask import Blueprint, request, jsonify, current_app
+from models.models import User, db
 import jwt
+from flask_cors import CORS
+
+#blueprint = Blueprint("foo", __name__, url_prefix="/api/bar")
+#CORS(blueprint)
 
 expert_validation_bp = Blueprint('expert_validation', __name__)
+CORS(expert_validation_bp)
+
+from flask import Response
 
 # Función middleware para verificar el token
 @expert_validation_bp.before_request
 def verificar_token():
+
+    if request.method.lower() == 'options':
+        return Response()
+
     token = request.headers.get('Authorization')
 
     # Verifica si la cabecera comienza con "Bearer "
@@ -41,3 +53,33 @@ def verificar_token():
 def recurso_protegido():
     # El token ya se ha verificado en la función middleware
     return jsonify({'message': 'Acceso permitido'}), 200
+
+# Ruta protegida
+@expert_validation_bp.route('/user', methods=['GET'])
+def getUser():
+    # El token ya se ha verificado en la función middleware
+    id = request.args.get('id')
+
+    if id is None:
+        return jsonify({'message': 'El id no puede ser nulo'}), 400
+
+    try:
+        user_id = int(id)
+    except ValueError:
+        return jsonify({'message': 'El is debe ser un número entero válido'}), 400
+
+    user = User.query.get(user_id)
+
+    if user:
+        user_data = {
+            'id': user.id,
+            'name': user.name,
+            'lastname': user.lastname,
+            'occupation': user.occupation,
+            'email': user.email
+        }
+        return jsonify({'user': user_data}), 200
+    else:
+        return jsonify({'message': 'No se encontró ningún usuario con el id proporcionado'}), 404
+
+

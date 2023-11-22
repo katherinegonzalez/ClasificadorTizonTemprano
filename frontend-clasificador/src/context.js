@@ -10,5 +10,7 @@ export const AppContext = createContext({
     messageType: 'error',
     setMessageType: () => {}, 
     message: 'Ocurrió un error! Vuelva a intentarlo.',
-    setMessage: () => {}
+    setMessage: () => {},
+    userName: '',
+    setUserName: () => {}
   });

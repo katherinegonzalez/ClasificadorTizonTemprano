@@ -35,12 +35,11 @@ function Copyright(props) {
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const { setIsAuth} = useContext(AppContext);
-  const { setShowMessage, setMessage } = useContext(AppContext);
+  const { setShowMessage, setMessage, setUserName } = useContext(AppContext);
   const [errors, setErrors] = useState({});
   
   const navigate = useNavigate();
 
-  
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleChange = (e) => {
@@ -83,7 +82,8 @@ export default function SignIn() {
       .then(response => {
         console.log(response);
         if (response.token) {
-          setSessionID(response.token, rememberMe);
+          setSessionID(response.token, response.id, rememberMe);
+          setUserName(response.name);
           setIsAuth(true);
           navigate('/validacion-experto');
         } else {

@@ -1,6 +1,7 @@
 const COOKIE_NAME = 'SESSSION_TOKEN';
+const USER_ID = 'USER_ID';
 
-export const setSessionID = (token, rememberMe = false) =>  {
+export const setSessionID = (token, userId, rememberMe = false) =>  {
     if (token) {
         const COOKIE_VALUE = token;
         console.log('rememberMe: ', rememberMe);
@@ -18,10 +19,12 @@ export const setSessionID = (token, rememberMe = false) =>  {
     
             // Crea la cookie con el nombre, valor y fecha de vencimiento
             document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; expires=${dueDateString}; path=/`;
+            document.cookie = `${USER_ID}=${userId}; expires=${dueDateString}; path=/`;
         } else {
     
             // Crea la cookie con el nombre, valor y fecha de vencimiento
             document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; path=/`;
+            document.cookie = `${USER_ID}=${userId}; path=/`;
     
         }
     }     
@@ -31,7 +34,7 @@ export const deleteCookie = () => {
     document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
 
-export const getSessionID = () =>  {
+const getCookie = (cookieToGet) => {
     // Obtener todas las cookies
     const cookies = document.cookie;
 
@@ -47,12 +50,16 @@ export const getSessionID = () =>  {
         var cookieName = cookieParts[0];
         var cookieValue = cookieParts[1];
 
-        if (COOKIE_NAME === cookieName) {
+        if (cookieToGet === cookieName) {
             return cookieValue;
         }
     }
 
     return null;
 }
+
+export const getSessionID = () => getCookie(COOKIE_NAME);
+
+export const getUserID = () => getCookie(USER_ID);
 
 export const isAuthenticated = () => !!getSessionID();

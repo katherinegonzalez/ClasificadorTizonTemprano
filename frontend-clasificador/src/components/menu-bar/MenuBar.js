@@ -12,9 +12,9 @@ import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
-import { deleteCookie } from '../auth/session';
+import { deleteCookie, getSessionID, getUserID } from '../auth/session';
 import { AppContext } from '../../context';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 const pages = {
   'mi-clasificador': 'Mi clasificador', 
@@ -29,7 +29,7 @@ const settings = {
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const {isAuth, setIsAuth} = useContext(AppContext);
+  const {isAuth, setIsAuth, userName, setUserName} = useContext(AppContext);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -49,6 +49,31 @@ function ResponsiveAppBar() {
       setIsAuth(false);
     }
   };
+
+  useEffect(() => {
+
+    const getUser = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/user?id=${getUserID()}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${getSessionID()}`,
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
+        });
+        const result = await response.json();
+        console.log(result);
+        setUserName(result.user.name);   
+      } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+      }
+    };
+    
+    if (!userName && isAuth) {
+      getUser();
+    }
+  });
 
   return (
       <AppBar position="sticky">
@@ -147,7 +172,7 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar>{userName.charAt(0)}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu

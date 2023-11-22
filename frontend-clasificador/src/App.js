@@ -19,6 +19,7 @@ function App() {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState('Ocurrió un error! Vuelva a intentarlo.');
   const [messageType, setMessageType] = useState('error');
+  const [userName, setUserName] = useState('');
 
   return (
     <BrowserRouter>
@@ -33,7 +34,9 @@ function App() {
         message, 
         setMessage,
         messageType, 
-        setMessageType}}>
+        setMessageType,
+        userName, 
+        setUserName}}>
     <MenuBar></MenuBar>
     <Routes>
       <Route path="/" element={<Classifier />} />

@@ -13,12 +13,12 @@ def login():
     email = data['email']
     password = data['password']
 
-     # Consulta la base de datos para buscar el usuario
+    # Consulta la base de datos para buscar el usuario
     user = User.query.filter_by(email=email).first()
 
     if user and user.password == password:
         token = jwt.encode({'user': email}, current_app.config['SECRET_KEY'], algorithm='HS256')
-        return jsonify({'token': token}), 200
+        return jsonify({'token': token, 'id': user.id, 'name': user.name}), 200
     else:
         return jsonify({'message': 'Password Incorrecto'}), 401
 
