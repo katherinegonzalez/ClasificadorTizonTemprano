@@ -12,6 +12,7 @@ import ProtectedRoutes from './components/auth/protected-routes/ProtectedRoutes'
 import LoginRoute from './components/auth/login-route/LoginRoute';
 import { isAuthenticated } from './components/auth/session';
 import Error from './components/toast-message/ToastMessage';
+import Profile from './components/profile/Profile';
 
 function App() {   
   const [openModal, setOpenModal] = useState(false);
@@ -48,6 +49,9 @@ function App() {
       </Route>
       <Route path="/sobre-nosotros" element={<About />} />
       <Route path="/registro" element={<SignUp />} />
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/perfil" element={<Profile />} />
+      </Route>
     </Routes>
     <Error></Error>
     </AppContext.Provider>

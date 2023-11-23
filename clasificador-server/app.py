@@ -7,8 +7,8 @@ from classifierAPI.classifier import classifier_bp
 from models.models import db 
 
 app = Flask(__name__)
-# CORS(app)  # Habilita CORS para la aplicación
-CORS(app, resources={r"/user": {"origins": "http://localhost:3000/", "methods": ["GET"]}}, supports_credentials=True, allow_headers="*")
+CORS(app)  # Habilita CORS para la aplicación
+# CORS(app, resources={r"/user": {"origins": "http://localhost:3000/", "methods": ["GET"]}}, supports_credentials=True, allow_headers="*")
 # CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers="*")
 # CORS(app, supports_credentials=True)
 

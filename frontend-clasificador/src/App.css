@@ -86,3 +86,9 @@ ul {
   list-style: none;
   margin-left: 20px;
 }
+
+
+.profile-text-field .css-15smvbx-MuiInputBase-input-MuiInput-input.Mui-disabled {
+  opacity: 1;
+  -webkit-text-fill-color: #575656;
+}

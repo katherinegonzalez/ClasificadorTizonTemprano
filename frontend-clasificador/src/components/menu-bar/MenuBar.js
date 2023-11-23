@@ -12,9 +12,11 @@ import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
+import { useNavigate } from 'react-router-dom';
 import { deleteCookie, getSessionID, getUserID } from '../auth/session';
 import { AppContext } from '../../context';
 import React, { useContext, useState, useEffect } from 'react';
+
 
 const pages = {
   'mi-clasificador': 'Mi clasificador', 
@@ -30,6 +32,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const {isAuth, setIsAuth, userName, setUserName} = useContext(AppContext);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -47,6 +50,10 @@ function ResponsiveAppBar() {
     if (settingValue === 'logout') {
       deleteCookie();
       setIsAuth(false);
+    }
+
+    if (settingValue === 'profile') {
+      navigate('/perfil');
     }
   };
 

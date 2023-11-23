@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { CircularProgress } from '@mui/material';
 import { AppContext } from '../../context';
+import { getUserID } from '../auth/session';
 
 function Copyright() {
   return (
@@ -87,7 +88,7 @@ export default function ExpertValidation() {
 
       const formData = new FormData();
       
-      formData.append('userId', 6);
+      formData.append('userId', getUserID());
       formData.append('files', JSON.stringify(validatedImagesList));
 
       fetch('http://127.0.0.1:5000/saveValidatedImages', {
