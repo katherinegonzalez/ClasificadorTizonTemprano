@@ -41,7 +41,7 @@ function Classifier() {
               color="text.primary"
               gutterBottom
             >
-              Clasificador de Tizón
+              PapApp
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
                 ¡Descubre el estado de tus papas de manera sencilla! 
