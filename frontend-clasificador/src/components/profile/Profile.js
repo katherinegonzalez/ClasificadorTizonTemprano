@@ -3,23 +3,11 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Avatar, Box, CircularProgress, Container, InputAdornment, Link, Stack, TextField } from '@mui/material';
+import { Avatar, Box, CircularProgress, Container, InputAdornment, Stack, TextField } from '@mui/material';
 import { AppContext } from '../../context';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { getSessionID, getUserID } from '../auth/session';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        PapApp
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from '../copy-right/CopyRight';
 
 function Profile() {
 
@@ -28,8 +16,7 @@ function Profile() {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    console.log('entraaa');
-
+  
     const getUser = async () => {
       try {
         const response = await fetch(`http://127.0.0.1:5000/user?id=${getUserID()}`, {
@@ -83,9 +70,9 @@ function Profile() {
                 </Typography>
 
                 <Box sx={{ '& > :not(style)': { m: 2 } }}>
-                <Stack direction="row" spacing={2}>
+                  <Stack direction="row" spacing={2}>
 
-                <TextField
+                  <TextField
                     id="input-with-icon-textfield"
                     fullWidth
                     label="Nombre"
@@ -101,26 +88,25 @@ function Profile() {
                     }}
                     variant="standard"
                   />
-                  <TextField
-                    id="input-with-icon-textfield"
-                    fullWidth
-                    disabled={true}
-                    className='profile-text-field'
-                    label="Apellido"
-                    value={userData.lastname}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AccountCircle />
-                        </InputAdornment>
-                      ),
-                    }}
-                    variant="standard"
-                  />
-              
-                </Stack>
-                <Stack direction="row" spacing={2}>
-                  <TextField
+                    <TextField
+                      id="input-with-icon-textfield"
+                      fullWidth
+                      disabled={true}
+                      className='profile-text-field'
+                      label="Apellido"
+                      value={userData.lastname}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircle />
+                          </InputAdornment>
+                        ),
+                      }}
+                      variant="standard"
+                    />
+                  </Stack>
+                  <Stack direction="row" spacing={2}>
+                    <TextField
                       id="input-with-icon-textfield"
                       fullWidth
                       disabled={true}
@@ -136,53 +122,45 @@ function Profile() {
                       }}
                       variant="standard"
                     />
-                  <TextField
-                    id="input-with-icon-textfield"
-                    fullWidth
-                    disabled={true}
-                    className='profile-text-field'
-                    label="Email"
-                    value={userData.email}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AccountCircle />
-                        </InputAdornment>
-                      ),
-                    }}
-                    variant="standard"
-                  />
-
-                </Stack>
-              
-              </Box>
-                
-              </CardContent>
-          
+                    <TextField
+                      id="input-with-icon-textfield"
+                      fullWidth
+                      disabled={true}
+                      className='profile-text-field'
+                      label="Email"
+                      value={userData.email}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircle />
+                          </InputAdornment>
+                        ),
+                      }}
+                      variant="standard"
+                    />
+                  </Stack>
+                </Box>  
+            </CardContent>
           </Card>
       </Grid>
-     
-        </Container>
-      }
-
-      { loading && 
-        <CardContent sx={{ 
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center', 
-          justifyContent: 'center'}}>
-          <CircularProgress/>
-        </CardContent> 
-      }
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-          <Copyright />
-      </Box>
-    </main>
-
-    </>
-    
-    );
+    </Container>
+  }
+  { loading && 
+    <CardContent sx={{ 
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center', 
+      justifyContent: 'center'}}>
+      <CircularProgress/>
+    </CardContent> 
+  }
+  <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+    <Copyright />
+  </Box>
+</main>
+</>
+);
 }
 
 

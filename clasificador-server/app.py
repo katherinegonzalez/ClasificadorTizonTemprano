@@ -5,6 +5,7 @@ from expert_validation import expert_validation_bp
 from save_images import save_images_bp
 from classifierAPI.classifier import classifier_bp
 from models.models import db 
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 CORS(app)  # Habilita CORS para la aplicación
@@ -19,6 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:mysql123*@localhos
 
 # Inicializa la base de datos con la aplicación
 db.init_app(app)
+bcrypt = Bcrypt(app)
 
 # Registra el blueprint de autenticación
 app.register_blueprint(auth_bp)

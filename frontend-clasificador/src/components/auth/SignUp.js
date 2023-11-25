@@ -3,9 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -16,19 +13,8 @@ import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Link as LinkRoute} from "react-router-dom";
 import { AppContext } from '../../context';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        PapApp
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import bcrypt from 'bcryptjs';
+import Copyright from '../copy-right/CopyRight';
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
@@ -37,8 +23,6 @@ export default function SignUp() {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
-
-  const signUpURL = 'http://127.0.0.1:5000/registro';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,69 +35,88 @@ export default function SignUp() {
     setLoading(true);
 
     const data = new FormData(event.currentTarget);
-    const formData = {
-      name: data.get('name'),
-      lastname: data.get('lastname'),
-      occupation: data.get('occupation'),
-      email: data.get('email'),
-      password: data.get('password'),
-      signupkey: data.get('signupkey')
-    };
+    const saltRounds = 10;
+    bcrypt.hash(data.get('password').toString(), saltRounds, function(err, hashPassword) {
+
+      if (err) {
+        setMessageType('error');
+        setMessage('');
+        setShowMessage(true);
+        setLoading(false);
+        return;
+      }
+
+      const formData = {
+        name: data.get('name'),
+        lastname: data.get('lastname'),
+        occupation: data.get('occupation'),
+        email: data.get('email'),
+        password: hashPassword,
+        signupkey: data.get('signupkey')
+      };
+    
+      const newErrors = {
+        name: !data.get('name'),
+        lastname: !data.get('lastname'),
+        occupation: !data.get('occupation'),
+        email: !data.get('email'),
+        password: !data.get('password'),
+        signupkey: !data.get('signupkey')
+      };
   
-    const newErrors = {
-      name: !data.get('name'),
-      lastname: !data.get('lastname'),
-      occupation: !data.get('occupation'),
-      email: !data.get('email'),
-      password: !data.get('password'),
-      signupkey: !data.get('signupkey')
-    };
-
-    // Actualizar estado con errores
-    setErrors(newErrors);
-
-    // Si todos los campos requeridos están llenos, continúa con el envío
-    if (!Object.values(newErrors).some((error) => error)) {
-
-      fetch('http://127.0.0.1:5000/registro', {
-        method: 'POST',
-        body:  JSON.stringify(formData),
-        headers: {
-          'Content-Type': 'application/json', // Establece el tipo de contenido como JSON
-        },
-      })
-      .then(response => response.json()) 
-      .then(response => {
-        console.log(response);
-        if (response.token) {
-          setSessionID(response.token);
-          setIsAuth(true);
-          navigate('/validacion-experto');
-          setMessage('¡Registro Exitoso!');
-          setMessageType('success');
-        } else {
-          if (response.message) {
-            setMessage(response.message);
-          }
-        }
+      // Actualizar estado con errores
+      setErrors(newErrors);
+  
+      // Si todos los campos requeridos están llenos, continúa con el envío
+      if (!Object.values(newErrors).some((error) => error)) {
+  
+        fetch('http://127.0.0.1:5000/registro', {
+          method: 'POST',
+          body:  JSON.stringify(formData),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(response => response.json()) 
+        .then(response => {
+          console.log(response);
+          if (response.token) {
+            setSessionID(response.token, response.id);
+            setIsAuth(true);
+            navigate('/validacion-experto');
+            setMessage('¡Registro Exitoso!');
+            setMessageType('success');
+            console.log('Registro exitoso');
+          } else {
+            if (response.message) {
+              setMessageType('error');
+              setMessage(response.message);
+            }
+          }          
+          setShowMessage(true);
+          setLoading(false);
+        })
+        .catch(err => {
+          setLoading(false);
+          setShowMessage(true);
+          setMessageType('error');
+          setMessage('');
+          console.log(err)
+        });
+  
+      } else {
+        setMessage('');
         setShowMessage(true);
         setLoading(false);
-      })
-      .catch(err => {
-        setLoading(false);
-        setShowMessage(true);
-        console.log(err)
-      });
+      }
 
-    } else {
-      setShowMessage(true);
-      setLoading(false);
-    }
+    });
+    
   };
   
   return (
     <>
-      {loading && 
+      { loading && 
       <Container 
         component="main" 
         maxWidth="xs" 
@@ -122,23 +125,23 @@ export default function SignUp() {
           flexDirection: 'column',
           height: 'calc(100vh - 64px)',
         }}>
-      <Box
-        sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        flex: 1,
-        justifyContent: 'center'
-        }}>
+        <Box
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          flex: 1,
+          justifyContent: 'center'
+          }}>
           <CircularProgress/>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 8, mb: 4}} />
       </Container>
-    }
-    {!loading && 
+      }
+      {!loading && 
       <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
+        <CssBaseline />
+        <Box
           sx={{
           marginTop: 8,
           display: 'flex',
@@ -146,15 +149,15 @@ export default function SignUp() {
           alignItems: 'center',
           }}>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
+            <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Registrarse
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
+            <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-              <TextField
+                <TextField
                   autoComplete="given-name"
                   name="name"
                   required
@@ -165,10 +168,10 @@ export default function SignUp() {
                   error={errors.name}
                   helperText={errors.name && "Este campo es obligatorio"}
                   onChange={handleChange}
-              />
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
-              <TextField
+                <TextField
                   required
                   fullWidth
                   id="lastName"
@@ -178,10 +181,10 @@ export default function SignUp() {
                   error={errors.lastname}
                   helperText={errors.lastname && "Este campo es obligatorio"}
                   onChange={handleChange}
-              />
+                />
               </Grid>
               <Grid item xs={12}>
-              <TextField
+                <TextField
                   required
                   fullWidth
                   id="occupation"
@@ -191,10 +194,10 @@ export default function SignUp() {
                   error={errors.occupation}
                   helperText={errors.occupation && "Este campo es obligatorio"}
                   onChange={handleChange}
-              />
+                />
               </Grid>
               <Grid item xs={12}>
-              <TextField
+                <TextField
                   required
                   fullWidth
                   id="email"
@@ -204,10 +207,10 @@ export default function SignUp() {
                   error={errors.email}
                   helperText={errors.email && "Este campo es obligatorio"}
                   onChange={handleChange}
-              />
+                />
               </Grid>
               <Grid item xs={12}>
-              <TextField
+                <TextField
                   required
                   fullWidth
                   name="password"
@@ -218,44 +221,44 @@ export default function SignUp() {
                   error={errors.password}
                   helperText={errors.password && "Este campo es obligatorio"}
                   onChange={handleChange}
-              />
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                    required
-                    fullWidth
-                    name="signupkey"
-                    label="Token de Registro"
-                    type="password"
-                    id="signupkey"
-                    autoComplete="signupkey"
-                    error={errors.signupkey}
-                    helperText={errors.signupkey && "Este campo es obligatorio"}
-                    onChange={handleChange}
+                  required
+                  fullWidth
+                  name="signupkey"
+                  label="Token de Registro"
+                  type="password"
+                  id="signupkey"
+                  autoComplete="signupkey"
+                  error={errors.signupkey}
+                  helperText={errors.signupkey && "Este campo es obligatorio"}
+                  onChange={handleChange}
                 />
               </Grid>
-          </Grid>
-          <Button
+            </Grid>
+            <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
               Registrarse
-          </Button>
-          <Grid container justifyContent="flex-end">
+            </Button>
+            <Grid container justifyContent="flex-end">
               <Grid item>
-              <LinkRoute to="/login" style={{ textDecoration: 'none' }}>
-                <Typography  variant="body2" color="primary">
-                  ¿Ya tienes una cuenta? Inicia Sesión
-                </Typography>
-              </LinkRoute>
+                <LinkRoute to="/login" style={{ textDecoration: 'none' }}>
+                  <Typography  variant="body2" color="primary">
+                    ¿Ya tienes una cuenta? Inicia Sesión
+                  </Typography>
+                </LinkRoute>
               </Grid>
-          </Grid>
+            </Grid>
           </Box>
-      </Box>
-      <Copyright sx={{ mt: 5 }} />
+        </Box>
+        <Copyright sx={{ mt: 5, mb: 4 }} />
       </Container>
-    }
+      }
     </>   
   );
 }

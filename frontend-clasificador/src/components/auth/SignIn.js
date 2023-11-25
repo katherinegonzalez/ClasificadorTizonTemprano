@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -16,26 +15,13 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import { AppContext } from '../../context';
 import { Link as LinkRoute} from "react-router-dom";
-
-
-function Copyright(props) {
-
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        PapApp
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import bcrypt from 'bcryptjs';
+import Copyright from '../copy-right/CopyRight';
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const { setIsAuth} = useContext(AppContext);
-  const { setShowMessage, setMessage, setUserName } = useContext(AppContext);
+  const { setShowMessage, setMessage, setMessageType, setUserName } = useContext(AppContext);
   const [errors, setErrors] = useState({});
   
   const navigate = useNavigate();
@@ -55,7 +41,9 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
+
     const data = new FormData(event.currentTarget);
+
     const formData = {
       email: data.get('email'),
       password: data.get('password'),
@@ -66,7 +54,7 @@ export default function SignIn() {
       password: !data.get('password'),
     };
 
-    // Actualizar estado con errores
+      // Actualizar estado con errores
     setErrors(newErrors);
 
     // Si todos los campos requeridos están llenos, continúa con el envío
@@ -90,6 +78,8 @@ export default function SignIn() {
           if (response.message) {
             setMessage(response.message);
           }
+          setMessage('');
+          setMessageType('error');
           setShowMessage(true);
         }
         setLoading(false);
@@ -97,15 +87,18 @@ export default function SignIn() {
       .catch(err => {
         setLoading(false);
         setIsAuth(false);
-        setShowMessage(true)
-        console.log(err)
+        setMessageType('error');
+        setMessage('');
+        setShowMessage(true);
+        console.log(err);
       });
     } else {
       setLoading(false);
       setIsAuth(false);
-      setShowMessage(true)
+      setMessageType('error');
+      setMessage('');
+      setShowMessage(true);
     }
-
   };
 
   return (

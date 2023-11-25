@@ -17,6 +17,7 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ListItemText } from '@mui/material';
 import ClassifierContent from './ClassifierContent';
+import Copyright from '../copy-right/CopyRight';
 
 function Classifier() {
 
@@ -59,10 +60,11 @@ function Classifier() {
         </Box>
         }
         { shouldShowClassifier && 
-            <Container sx={{ py: 8 }} maxWidth="md">
-                <ClassifierContent></ClassifierContent>  
+            <Container sx={{ pt: 8 }} maxWidth="md">
+              <ClassifierContent></ClassifierContent>  
             </Container> 
         }
+        <Copyright sx={{ mt: 8, mb: 4 }} />
       </main>     
     );
   }

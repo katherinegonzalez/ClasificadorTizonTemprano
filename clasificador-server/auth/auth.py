@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import jwt
 from models.models import User, Expert, db
+from flask_bcrypt import Bcrypt
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -13,10 +14,12 @@ def login():
     email = data['email']
     password = data['password']
 
+    bcrypt = Bcrypt()
+
     # Consulta la base de datos para buscar el usuario
     user = User.query.filter_by(email=email).first()
 
-    if user and user.password == password:
+    if user and bcrypt.check_password_hash(user.password, password.encode('utf-8')):
         token = jwt.encode({'user': email}, current_app.config['SECRET_KEY'], algorithm='HS256')
         return jsonify({'token': token, 'id': user.id, 'name': user.name}), 200
     else:
@@ -34,7 +37,7 @@ def registro():
         lastname = datos_registro['lastname']
         occupation = datos_registro['occupation']
         email = datos_registro['email']
-        password = datos_registro['password']
+        password = datos_registro['password'].encode('utf-8')
         signup_key = datos_registro['signupkey']
 
         # Verifica si el usuario ya existe en la base de datos
@@ -52,7 +55,7 @@ def registro():
             token = jwt.encode({'user': datos_registro['email']}, current_app.config['SECRET_KEY'], algorithm='HS256')
 
             # Crea una respuesta JSON válida
-            response = jsonify({'token': token})
+            response = jsonify({'token': token, 'id': nuevo_usuario.id, 'name': nuevo_usuario.name})
 
             # Configura el tipo de contenido
             response.headers['Content-Type'] = 'application/json'

@@ -59,15 +59,15 @@ function About() {
           <Box sx={{display: 'flex', justifyContent: 'center', py: 4}}>
             <Stack direction="row" spacing={6}>
               <Stack sx={{alignItems:'center'}} direction="column" spacing={1}>
-                  <Avatar sx= {{width: 100, height: 100}} alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                  <Avatar sx= {{width: 100, height: 100}} alt="Remy Sharp" src="/JoshepImage.png" />
                   <Typography>Joshep Blanco</Typography>
               </Stack>
               <Stack sx={{alignItems:'center'}} direction="column" spacing={1}>
-                <Avatar sx= {{width: 100, height: 100}} alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+                <Avatar sx= {{width: 100, height: 100}} alt="Cindy Baker" src="/KatheImage.png" />
                 <Typography>Katherine González</Typography>
               </Stack>
               <Stack sx={{alignItems:'center'}} direction="column" spacing={1}>
-                <Avatar sx= {{width: 100, height: 100}} alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+                <Avatar sx= {{width: 100, height: 100}} alt="Travis Howard" src="/LoreImage.png" />
                 <Typography>Lorena Mora</Typography>
               </Stack>
             </Stack>

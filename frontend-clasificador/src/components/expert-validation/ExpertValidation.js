@@ -9,23 +9,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import { CircularProgress } from '@mui/material';
 import { AppContext } from '../../context';
 import { getUserID } from '../auth/session';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        PapApp
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from '../copy-right/CopyRight';
 
 export default function ExpertValidation() {
 
