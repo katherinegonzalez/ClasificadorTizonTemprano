@@ -18,7 +18,7 @@ import Copyright from '../copy-right/CopyRight';
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
-  const { setIsAuth } = useContext(AppContext);
+  const { setIsAuth, setUserName } = useContext(AppContext);
   const { setShowMessage, setMessage, setMessageType } = useContext(AppContext);
   const [errors, setErrors] = useState({});
 
@@ -83,6 +83,7 @@ export default function SignUp() {
           if (response.token) {
             setSessionID(response.token, response.id);
             setIsAuth(true);
+            setUserName(response.name);
             navigate('/validacion-experto');
             setMessage('¡Registro Exitoso!');
             setMessageType('success');

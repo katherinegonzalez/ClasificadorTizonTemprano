@@ -28,7 +28,6 @@ def login():
 # Ruta de registro
 @auth_bp.route('/registro', methods=['POST'])
 def registro():
-
     try:
         # Obtiene los datos del formulario de registro
         datos_registro = request.get_json()
@@ -54,10 +53,8 @@ def registro():
             # Genera un token JWT para el nuevo usuario
             token = jwt.encode({'user': datos_registro['email']}, current_app.config['SECRET_KEY'], algorithm='HS256')
 
-            # Crea una respuesta JSON válida
             response = jsonify({'token': token, 'id': nuevo_usuario.id, 'name': nuevo_usuario.name})
 
-            # Configura el tipo de contenido
             response.headers['Content-Type'] = 'application/json'
 
             return response, 201  # 201: Creado con éxito

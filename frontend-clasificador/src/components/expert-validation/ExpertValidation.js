@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { CircularProgress } from '@mui/material';
 import { AppContext } from '../../context';
-import { getUserID } from '../auth/session';
+import { getSessionID, getUserID } from '../auth/session';
 import Copyright from '../copy-right/CopyRight';
 
 export default function ExpertValidation() {
@@ -24,14 +24,17 @@ export default function ExpertValidation() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('entra');
-        const response = await fetch('http://127.0.0.1:5000/getImagesToValidate');
+        const response = await fetch('http://127.0.0.1:5000/getImagesToValidate', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${getSessionID()}`,
+            'Content-Type': 'application/json'
+          },
+        });
         const result = await response.json();
-        console.log('cards: ', result.images);
         setCards(result.images);
         setLoading(false);
       } catch (error) {
-        console.error('Error al realizar la solicitud:', error);
         setShowMessage(true);
         setLoading(false);
       }
@@ -58,7 +61,6 @@ export default function ExpertValidation() {
       }
       return image;
     });
-    console.log('validatedCardsList: ', validatedCardsList);
     setCards(validatedCardsList);
   }
 
@@ -81,9 +83,11 @@ export default function ExpertValidation() {
       fetch('http://127.0.0.1:5000/saveValidatedImages', {
       method: 'POST',
       body: formData,
+      headers: {
+        'Authorization': `Bearer ${getSessionID()}`
+      }
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           setIsValidationDone(true);
         } else {

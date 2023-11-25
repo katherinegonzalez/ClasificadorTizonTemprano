@@ -80,7 +80,7 @@ function ResponsiveAppBar() {
     if (!userName && isAuth) {
       getUser();
     }
-  });
+  }, [userName, setUserName, isAuth]);
 
   return (
       <AppBar position="sticky">
