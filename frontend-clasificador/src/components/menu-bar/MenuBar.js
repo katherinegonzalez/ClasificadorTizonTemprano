@@ -21,7 +21,7 @@ import React, { useContext, useState, useEffect } from 'react';
 const pages = {
   'mi-clasificador': 'Mi clasificador', 
   'validacion-experto': 'Ayudanos a Mejorar', 
-  'sobre-nosotros': 'Sobe Nosotros'
+  'sobre-nosotros': 'Sobre Nosotros'
 };
 const settings = {
   'profile': 'Perfil', 

@@ -91,9 +91,9 @@ function ClassifierContent() {
   const recommendationResult = (prediction) => {
     let recommendation = 'Para atacar el tizón tardío y evitar que este se propague al resto de tu cultivo,  te recomendamos quitar las hojas que veas con manchas oscuras de tu cultivo  usar un producto que contenga Trichoderma harzianum, un biofungicida eficaz para el control de este hongo.';
     if(prediction.toLowerCase().includes('sana')) {
-      recommendation = 'Tu cultivo está sano, sigue cuidandolo.';
+      recommendation = 'Recuerda revisar tu cultivo de manera frecuente para asegurarte que continue creciendo sanamente. También recuerda regarlo de forma regular evitando que se encharque y asegúrate que reciba el sol directamente.';
     } else if (prediction.toLowerCase().includes('temprano')) {
-      recommendation = 'Para contra atacar el tizón temprano y evitar que este se propague al resto de tu cultivo, te recomendamos quitar las hojas que veas con manchas oscuras o puntos amarillos de tu cultivo y usar Gluticid, un producto biologico eficaz para el control de este hongo.';
+      recommendation = 'Para contra atacar el tizón temprano y evitar que este se propague al resto de tu cultivo, te recomendamos quitar las hojas que veas con manchas oscuras o puntos amarillos de tu cultivo y usar Gluticid, un producto biológico eficaz para el control de este hongo.';
     }
     return recommendation;
   }
