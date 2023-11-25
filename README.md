@@ -31,9 +31,9 @@ Ver Más Aquí.
 
 ## Integrantes del Equipo 😊
 
-Katherine Xiomar González Santacruz
-Joshep Andersson Blanco Reyes
-Lorena Patricia Mora Hernandez
+Katherine Xiomar González Santacruz  
+Joshep Andersson Blanco Reyes  
+Lorena Patricia Mora Hernandez  
 
 
 
