@@ -18,11 +18,11 @@ Las carpetas se estructuran de la siguiente manera:
 Es una aplicación web implementada en React js. Para más detalles sobre instalación y configuración haz click [Aquí](./frontend-clasificador/README.md) 
 
 # Backend Clasificador 📋
-Este código está implementado en python con el framework Flask, en un solo servidor local Flask se encuentran alojados los servicios de autenticación, almacenamiento de usuarios, almacenamiento de imágenes y la API de clasificación. Para más detalles sobre configuración e instalación ve [Aquí](./clasificador-server/README.md) .
+Este código está implementado en python con el framework Flask, en un solo servidor local Flask se encuentran alojados los servicios de autenticación, almacenamiento de usuarios, almacenamiento de imágenes y la API de clasificación. Para más detalles sobre configuración e instalación ve [Aquí](./clasificador-server/README.md).
 
 # API de clasificación 📋
-El modelo utilizado para este clasificador es el vgg16_bn.pkl alojado en la carpeta classifierAPI.
-El c´digo de entrenamiento de este modelo se encuentra en los siguientes Noteboks:  
+El modelo utilizado para este clasificador es el vgg16_bn.pkl alojado en la carpeta classifierAPI.  
+El código de entrenamiento de este modelo se encuentra en los siguientes Noteboks:  
 [NoteBook 1](https://colab.research.google.com/drive/1Sqv-f7gp_RRSz8ejyxkEjeMAfrjauUB-?usp=sharing)  
 [NoteBook 2](https://colab.research.google.com/drive/1wdVdsFGMSdNB2Js1fX62ARRtDHfRyVQE?usp=sharing)  
 
