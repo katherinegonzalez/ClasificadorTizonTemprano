@@ -88,12 +88,15 @@ function ClassifierContent() {
     return message;
   }
 
-  const handleCloseError = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
+  const recommendationResult = (prediction) => {
+    let recommendation = 'Para atacar el tizón tardío y evitar que este se propague al resto de tu cultivo,  te recomendamos quitar las hojas que veas con manchas oscuras de tu cultivo  usar un producto que contenga Trichoderma harzianum, un biofungicida eficaz para el control de este hongo.';
+    if(prediction.toLowerCase().includes('sana')) {
+      recommendation = 'Tu cultivo está sano, sigue cuidandolo.';
+    } else if (prediction.toLowerCase().includes('temprano')) {
+      recommendation = 'Para contra atacar el tizón temprano y evitar que este se propague al resto de tu cultivo, te recomendamos quitar las hojas que veas con manchas oscuras o puntos amarillos de tu cultivo y usar Gluticid, un producto biologico eficaz para el control de este hongo.';
     }
-    setShowMessage(false);
-  };
+    return recommendation;
+  }
 
   return (
     <Grid item xs={12} md={6} justifyContent="center" alignItems="center">
@@ -155,7 +158,7 @@ function ClassifierContent() {
               Según la imagen de la hoja que cargaste, {resultMessage(predictedClass)}.
             </Typography>
             <Typography variant="subtitle1" paragraph>
-              <strong>Recomendación: </strong>Te sugerimos seguir cuidando tu cultivo para mantenerlo saludable.
+              <strong>Recomendación: </strong> {recommendationResult(predictedClass)}
             </Typography>
             <Typography variant="subtitle1">
               Si deseas obtener información detallada sobre las probabilidades haz

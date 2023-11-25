@@ -11,7 +11,7 @@ classifier_bp = Blueprint('classifier', __name__)
 
 # Set your model file path (change 'resnet18.pkl' to the actual filename and path)
 current_dir = Path(__file__).parent
-model_path = current_dir / 'resnet18.pkl'
+model_path = current_dir / 'vgg16_bn.pkl'
 # Load the model
 learn = load_learner(model_path)
 
