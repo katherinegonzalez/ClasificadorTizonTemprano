@@ -70,7 +70,6 @@ function ResponsiveAppBar() {
           },
         });
         const result = await response.json();
-        console.log(result);
         setUserName(result.user.name);   
       } catch (error) {
         console.error('Error al realizar la solicitud:', error);

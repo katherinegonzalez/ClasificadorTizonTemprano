@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import { AppContext } from '../../context';
 import { Link as LinkRoute} from "react-router-dom";
-import bcrypt from 'bcryptjs';
 import Copyright from '../copy-right/CopyRight';
 
 export default function SignIn() {
@@ -68,7 +67,6 @@ export default function SignIn() {
       })
       .then(response => response.json()) 
       .then(response => {
-        console.log(response);
         if (response.token) {
           setSessionID(response.token, response.id, rememberMe);
           setUserName(response.name);
@@ -90,7 +88,6 @@ export default function SignIn() {
         setMessageType('error');
         setMessage('');
         setShowMessage(true);
-        console.log(err);
       });
     } else {
       setLoading(false);

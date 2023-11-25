@@ -79,7 +79,6 @@ export default function SignUp() {
         })
         .then(response => response.json()) 
         .then(response => {
-          console.log(response);
           if (response.token) {
             setSessionID(response.token, response.id);
             setIsAuth(true);
@@ -87,7 +86,6 @@ export default function SignUp() {
             navigate('/validacion-experto');
             setMessage('¡Registro Exitoso!');
             setMessageType('success');
-            console.log('Registro exitoso');
           } else {
             if (response.message) {
               setMessageType('error');
@@ -102,7 +100,6 @@ export default function SignUp() {
           setShowMessage(true);
           setMessageType('error');
           setMessage('');
-          console.log(err)
         });
   
       } else {

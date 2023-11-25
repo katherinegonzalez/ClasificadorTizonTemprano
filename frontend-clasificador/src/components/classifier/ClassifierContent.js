@@ -23,24 +23,18 @@ function ClassifierContent() {
 
   const inputRef = useRef(null);
 
-  const googleScript ='https://script.google.com/macros/s/AKfycby6n24ROjNPCerPAaRUXtHb2TVrYk4ZoM7xZeaMP9-0aRwJ7M2B6fM8ipfrTmkOHMdD3A/exec';
-  
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      console.log('event.target.files[0]: ', event.target.files[0]);
       setImage(event.target.files[0]);
       setImageSrc(URL.createObjectURL(event.target.files[0]));
     }
    }
 
    const onImageDelete = (event) => {
-      console.log('borrar image');
       setImageSrc(defaultImage);
       setImage(null);
       setpredictedClass('');
       setProbabilities([]);
-      console.log(imageSrc);
-    
    }
   
    const onClassifyImage = () => {
@@ -54,7 +48,6 @@ function ClassifierContent() {
     })
     .then(response => response.json()) 
     .then(response => {
-      console.log(response);
       setpredictedClass(response.predicted_class);
       setProbabilities(response.probabilities);
       setLoading(false);
@@ -65,14 +58,12 @@ function ClassifierContent() {
         body: formData,
       }).then(() => setLoading(false))
       .catch(err => {
-        console.log(err)
         setLoading(false);
       });
     })
     .catch(err => {
       setLoading(false);
-      setShowMessage(true)
-      console.log(err)
+      setShowMessage(true);
     });
 
   }

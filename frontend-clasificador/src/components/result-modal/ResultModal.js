@@ -36,7 +36,6 @@ function ResultModal ({
     2: 'Probabilidad de que la hoja tenga Tizón Temprano es de: ' 
   };
 
-  console.log('probabilities');
   return (
       <BootstrapDialog
         onClose={handleClose}

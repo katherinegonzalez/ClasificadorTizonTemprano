@@ -28,7 +28,6 @@ function Profile() {
           },
         });
         const result = await response.json();
-        console.log(result);
         setUserData(result.user); 
         setLoading(false);
       } catch (error) {

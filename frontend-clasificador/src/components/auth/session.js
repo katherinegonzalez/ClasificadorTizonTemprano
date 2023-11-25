@@ -4,7 +4,6 @@ const USER_ID = 'USER_ID';
 export const setSessionID = (token, userId, rememberMe = false) =>  {
     if (token) {
         const COOKIE_VALUE = token;
-        console.log('rememberMe: ', rememberMe);
     
         if (rememberMe) {
             // Define la duración de la cookie en días (opcional)

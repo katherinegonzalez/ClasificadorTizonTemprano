@@ -31,7 +31,6 @@ def registro():
     try:
         # Obtiene los datos del formulario de registro
         datos_registro = request.get_json()
-        print('datos_registro: ', datos_registro)
         name = datos_registro['name']
         lastname = datos_registro['lastname']
         occupation = datos_registro['occupation']

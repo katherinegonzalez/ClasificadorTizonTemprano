@@ -25,7 +25,6 @@ def verificar_token():
         # Si comienza con "Bearer ", elimina esa parte
         token = token[7:]
     
-    print('token: ', token)
     payload = ''
     if not token:
         return jsonify({'message': 'Token faltante'}), 401
@@ -102,15 +101,10 @@ def saveValidatedImages():
     try:
 
         user_id = request.form.get('userId')
-        print('user_id: ', user_id)
         uploaded_files_json = request.form.get('files')
-        print('uploaded_files_json: ', uploaded_files_json)
         uploaded_files_list = json.loads(uploaded_files_json)
-        print('uploaded_files_list: ', uploaded_files_list)
         
         for uploaded_file in uploaded_files_list:
-          
-            print(uploaded_file['id'])
             # Buscar la imagen existente en la base de datos por su nombre
             existing_image = Images.query.get(uploaded_file['id'])
             user = User.query.get(user_id)
@@ -125,7 +119,6 @@ def saveValidatedImages():
                 db.session.commit()
 
                 if uploaded_file['isApproved']:
-                    print('va a guardar al drive')
                     saveInGoogleDrive(uploaded_file['image'], uploaded_file['imageType'], uploaded_file['filename'], uploaded_file['classification'])
      
         return jsonify({'message': 'Las imágenes se editaron exitosamente'}), 200
