@@ -1,32 +1,39 @@
-python3 main.py
+# PapApp 🚀
 
-Si al ejecutar se tiene el error:
+PapApp es una aplicación con Inteligencia Artificial para la clasificación de hojas de las plantas de papas, su objetivo es determinar, a través de imágenes, si las hojas tienen la enfermedad de Tizón temprano, Tizón tardío o si es un cultivo sano. 
 
- NotOpenSSLWarning: urllib3 v2.0 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'
+Este proyecto ha sido implementado como proyecto de grado de la maestría de Inteligencia Artificial de la Pontificia Universidad Javeriana.
 
- No module named ‘PIL.image’
+Dentro de este repositorio se encuentran la aplicación Web UI implementada en React y la aplicación backend implementada en python, que contiene la API de clasificación, autenticación y almacenamiento de imágenes. 
 
- Entonces: 
+# Estructura de Carpetas 📂
 
-sudo !pip3 install flask install Pillow==9.1.0
+Las carpetas se estructuran de la siguiente manera:
+
+- **/frontend-clasificador**: Contiene el código frontend de la aplicación web.
+- **/clasificador-server**: Contiene el código fuente del backend de la aplicación
+  - **/classifierAPI**: Código del API del clasifiador y archivo .pkl del modelo entrenado.
+
+# Frontend Clasificador 📋
+Es una aplicación web implementada en React js. Para más detalles sobre instalación y configuración haz click [Aquí](./frontend-clasificador/README.md) 
+
+# Backend Clasificador 📋
+Este código está implementado en python con el framework Flask, en un solo servidor local Flask se encuentran alojados los servicios de autenticación, almacenamiento de usuarios, almacenamiento de imágenes y la API de clasificación. Para más detalles sobre configuración e instalación ve [Aquí](./clasificador-server/README.md) .
+
+# API de clasificación 📋
+El modelo utilizado para este clasificador es el vgg16_bn.pkl alojado en la carpeta classifierAPI.
+Este modelo fue entrenado en el siguiente NoteBook.
+Ver Más Aquí.
+
+## Github repository 📦
+
+[GithubPapApp](https://github.com/katherinegonzalez/ClasificadorTizonTemprano)
+
+## Integrantes del Equipo 😊
+
+Katherine Xiomar González Santacruz
+Joshep Andersson Blanco Reyes
+Lorena Patricia Mora Hernandez
 
 
-sudo pip3 install -U flask-cors
 
-
-sudo pip3 install PyJWT
-
-
-sudo pip3 install Flask-SQLAlchemy
-
-sudo pip3 install pymysql
-
-
-
-TODO:
-
-Almacenar la cookie de sesión
-usar isAutheticated para mostrar os componentes permitidos
-buscar como verificar con el backend que el token sea correcto para las peticiones
-Hacer la interfaz de aprobar imagenes
-almacenar las imagenes clasificadas en la base de datos o en google drive. Revisar que es mejor

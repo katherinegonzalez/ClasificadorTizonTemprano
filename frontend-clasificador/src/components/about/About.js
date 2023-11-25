@@ -81,7 +81,7 @@ function About() {
             color="text.primary"
             gutterBottom
           >
-            Contactanos:
+            Contáctanos:
           </Typography>
 
           <Box sx={{display: 'flex', justifyContent: 'center', py: 2}}>
