@@ -1,4 +1,4 @@
-# PapApp 🚀
+# PapApp 🍃🍠
 
 PapApp es una aplicación con Inteligencia Artificial para la clasificación de hojas de las plantas de papas, su objetivo es determinar, a través de imágenes, si las hojas tienen la enfermedad de Tizón temprano, Tizón tardío o si es un cultivo sano. 
 
@@ -22,8 +22,9 @@ Este código está implementado en python con el framework Flask, en un solo ser
 
 # API de clasificación 📋
 El modelo utilizado para este clasificador es el vgg16_bn.pkl alojado en la carpeta classifierAPI.
-Este modelo fue entrenado en el siguiente NoteBook.
-Ver Más Aquí.
+El c´digo de entrenamiento de este modelo se encuentra en los siguientes Noteboks:  
+[NoteBook 1](https://colab.research.google.com/drive/1Sqv-f7gp_RRSz8ejyxkEjeMAfrjauUB-?usp=sharing)  
+[NoteBook 2](https://colab.research.google.com/drive/1wdVdsFGMSdNB2Js1fX62ARRtDHfRyVQE?usp=sharing)  
 
 ## Github repository 📦
 
