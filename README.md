@@ -12,7 +12,7 @@ Las carpetas se estructuran de la siguiente manera:
 
 - **/frontend-clasificador**: Contiene el código frontend de la aplicación web.
 - **/clasificador-server**: Contiene el código fuente del backend de la aplicación
-  - **/classifierAPI**: Código del API del clasifiador y archivo .pkl del modelo entrenado.
+  - **/routes/classifierAPI**: Código del API del clasificador y archivo .pkl del modelo entrenado.
 
 # Frontend Clasificador 📋
 Es una aplicación web implementada en React js. Para más detalles sobre instalación y configuración haz click [Aquí](./frontend-clasificador/README.md) 
@@ -22,18 +22,17 @@ Este código está implementado en python con el framework Flask, en un solo ser
 
 # API de clasificación 📋
 El modelo utilizado para este clasificador es el vgg16_bn.pkl alojado en la carpeta classifierAPI.  
-El código de entrenamiento de este modelo se encuentra en los siguientes Noteboks:  
-[NoteBook 1](https://colab.research.google.com/drive/1Sqv-f7gp_RRSz8ejyxkEjeMAfrjauUB-?usp=sharing)  
-[NoteBook 2](https://colab.research.google.com/drive/1wdVdsFGMSdNB2Js1fX62ARRtDHfRyVQE?usp=sharing)  
-
+El código de entrenamiento de este modelo se encuentra en los siguientes Noteboks de Google Colab:  
+[Notebook Modelamiento Calsificador PapApp](https://colab.research.google.com/drive/1wdVdsFGMSdNB2Js1fX62ARRtDHfRyVQE?usp=sharing) 
+ 
 ## Github repository 📦
 
 [GithubPapApp](https://github.com/katherinegonzalez/ClasificadorTizonTemprano)
 
 ## Integrantes del Equipo 😊
 
-Katherine Xiomar González Santacruz  
 Joshep Andersson Blanco Reyes  
+Katherine Xiomar González Santacruz  
 Lorena Patricia Mora Hernandez  
 
 
