@@ -23,5 +23,5 @@ Para ejecutar el proyecto en tu ambiente local:
 1. Ejecuta el comando `npm start`, de esta manera se ejecuta la aplicación en modo de desarrollo.
 2. Abre tu navegador en [http://localhost:3000](http://localhost:3000)
 
-    ### Nota: Asegúrate de que el Backend de la aplicación también este corriendo en tu servidor local. Si aún no lo tienes configurado haz click [aquí](./clasificador-server/README.md).
+    ### Nota: Asegúrate de que el Backend de la aplicación también este corriendo en tu servidor local. Si aún no lo tienes configurado haz click [aquí](../clasificador-server/README.md).
 

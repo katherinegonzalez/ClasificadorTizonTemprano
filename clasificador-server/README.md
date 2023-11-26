@@ -4,11 +4,11 @@ Esta aplicación está implementada en Python con Flask, y se utilizó también 
 
 ## Librerias 📋
 
-* [Flask](https://flask.palletsprojects.com/en/3.0.x/): Esta librería fue usada para los estilos de la página web.
-* [Fast.ai](https://docs.fast.ai/): esta librería fue usada para encriptar las contraseñas antes de enviarlas al backend.
-* [flask_bcrypt]
-* [flask_cors]
-* [flask_sqlalchemy]
+* [Flask](https://flask.palletsprojects.com/en/3.0.x/): Esta librería fue usada para manejar las solicitudes y respuestas HTTP, facilitando la interacción entre el navegador y el servidor.
+* [Fast.ai](https://docs.fast.ai/): Esta librería fue usada en la API del clasificador para realizar la clasificación de imágenes. Carga el modelo de aprendizaje profundo VGG16 y lo usa para predecir la clase a la que pertenece la imagen. 
+* [Flask-Bcrypt](https://pypi.org/project/Flask-Bcrypt/): Esta librería es una extensión para Flask que facilita la integración del algoritmo de hash bcrypt en una aplicación Flask. Se usó para encriptar las contraseñas en el sistema.
+* [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/): Esta es una extensión para Flask que simplifica la habilitación de Cross-Origin Resource Sharing (CORS).
+* [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/): Esta librería es una extensión para Flask que simplifica la interacción con bases de datos SQL utilizando SQLAlchemy. 
 
 ## Instalación 💻 
 
@@ -42,7 +42,7 @@ Para importar el esquema de la base de datos en Workbench:
     * Selecciona la ubicación de la carpeta `BaseDeDatos` de este proyecto.  
     * Selecciona la base de datos de destino en su servidor.    
     
-    ### Nota: Asegúrate de tener previamente creada tu base de datos con el nombre `clasificadorDB`, es aquí donde importarás los archivos .sql.  
+    ### Nota: Asegúrate de tener previamente creada tu base de datos con el nombre clasificadorDB, es aquí donde importarás los archivos .sql.  
 
 4. Haz clic en "Start Import" para comenzar el proceso de importación.
 5. Ve al archivo app.py, y en la línea 15 reemplaza la cadena de texto `tu_contraseña` por la contraseña que tienes configurada en tu base de datos. 
@@ -50,7 +50,7 @@ Para importar el esquema de la base de datos en Workbench:
 `app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tu_contraseña@localhost/clasificadorDB?charset=utf8mb4'`
 
 
-Y listo! Si la aplicación de frontend ya está siendo ejecutada en tu ambiente local entnces puedes empezar a probar el sistema PapApp, si aún no está ejecutándose haz click [aquí](./clasificador-server/README.md) y sigue los pasos.
+Y listo! Si la aplicación de frontend ya está siendo ejecutada en tu ambiente local entnces puedes empezar a probar el sistema PapApp, si aún no está ejecutándose haz click [aquí](../frontend-clasificador/README.md) y sigue los pasos.
 
 ### Nota: 
 
