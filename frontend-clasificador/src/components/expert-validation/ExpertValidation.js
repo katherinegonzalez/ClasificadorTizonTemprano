@@ -13,6 +13,7 @@ import { CircularProgress } from '@mui/material';
 import { AppContext } from '../../context';
 import { getSessionID, getUserID } from '../auth/session';
 import Copyright from '../copy-right/CopyRight';
+import { BASE_URL, GET_IMAGES_TO_VALIDATE_URL, SAVE_VALIDATED_IMAGES_URL } from '../../utils/constants';
 
 export default function ExpertValidation() {
 
@@ -24,7 +25,7 @@ export default function ExpertValidation() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/getImagesToValidate', {
+        const response = await fetch(`${BASE_URL}${GET_IMAGES_TO_VALIDATE_URL}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${getSessionID()}`,
@@ -80,7 +81,7 @@ export default function ExpertValidation() {
       formData.append('userId', getUserID());
       formData.append('files', JSON.stringify(validatedImagesList));
 
-      fetch('http://127.0.0.1:5000/saveValidatedImages', {
+      fetch(`${BASE_URL}${SAVE_VALIDATED_IMAGES_URL}`, {
       method: 'POST',
       body: formData,
       headers: {

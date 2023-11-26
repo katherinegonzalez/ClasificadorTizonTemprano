@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteCookie, getSessionID, getUserID } from '../auth/session';
 import { AppContext } from '../../context';
 import React, { useContext, useState, useEffect } from 'react';
+import { BASE_URL, GET_USER_BY_ID_URL } from '../../utils/constants';
 
 
 const pages = {
@@ -61,7 +62,7 @@ function ResponsiveAppBar() {
 
     const getUser = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/user?id=${getUserID()}`, {
+        const response = await fetch(`${BASE_URL}${GET_USER_BY_ID_URL}${getUserID()}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${getSessionID()}`,

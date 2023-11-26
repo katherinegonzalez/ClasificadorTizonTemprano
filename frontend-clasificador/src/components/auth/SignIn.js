@@ -16,6 +16,7 @@ import { CircularProgress } from '@mui/material';
 import { AppContext } from '../../context';
 import { Link as LinkRoute} from "react-router-dom";
 import Copyright from '../copy-right/CopyRight';
+import { BASE_URL, LOGIN_URL } from '../../utils/constants';
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,14 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   const [rememberMe, setRememberMe] = useState(false);
+
+  const setError = (message = '') => {
+    setMessage(message);
+    setMessageType('error');
+    setShowMessage(true);
+    setIsAuth(false);
+    setLoading(false);
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,12 +62,12 @@ export default function SignIn() {
       password: !data.get('password'),
     };
 
-      // Actualizar estado con errores
+    // Actualizar estado con errores
     setErrors(newErrors);
 
     // Si todos los campos requeridos están llenos, continúa con el envío
     if (!Object.values(newErrors).some((error) => error)) {
-        fetch('http://127.0.0.1:5000/login', {
+        fetch(`${BASE_URL}${LOGIN_URL}`, {
         method: 'POST',
         body:  JSON.stringify(formData),
         headers: {
@@ -73,28 +82,16 @@ export default function SignIn() {
           setIsAuth(true);
           navigate('/validacion-experto');
         } else {
-          if (response.message) {
-            setMessage(response.message);
-          }
-          setMessage('');
-          setMessageType('error');
-          setShowMessage(true);
+          const errorMessage = response.message ? response.message : '';
+          setError(errorMessage);
         }
         setLoading(false);
       })
       .catch(err => {
-        setLoading(false);
-        setIsAuth(false);
-        setMessageType('error');
-        setMessage('');
-        setShowMessage(true);
+        setError();
       });
     } else {
-      setLoading(false);
-      setIsAuth(false);
-      setMessageType('error');
-      setMessage('');
-      setShowMessage(true);
+      setError();
     }
   };
 

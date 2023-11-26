@@ -9,6 +9,7 @@ import { Box, Button, CircularProgress, IconButton } from '@mui/material';
 import { AppContext } from '../../context';
 import ResultModal from '../result-modal/ResultModal';
 import CloseIcon from '@mui/icons-material/Close';
+import { BASE_URL, CLASSIFY_IMAGES_URL, SAVE_IMAGES_TO_VALIDATE_URL } from '../../utils/constants';
 
 function ClassifierContent() {
 
@@ -42,7 +43,7 @@ function ClassifierContent() {
     formData.append('file', image);
     setLoading(true);
 
-    fetch('http://127.0.0.1:5000/classifyImage', {
+    fetch(`${BASE_URL}${CLASSIFY_IMAGES_URL}`, {
       method: 'POST',
       body: formData,
     })
@@ -51,9 +52,9 @@ function ClassifierContent() {
       setpredictedClass(response.predicted_class);
       setProbabilities(response.probabilities);
       setLoading(false);
-      // Almacenar imagen para ser valdiada por experto después
+      // Almacenar imagen para ser validada por experto después
       formData.append('classification', response.predicted_class);
-      fetch('http://127.0.0.1:5000/saveImagesToValidate', {
+      fetch(`${BASE_URL}${SAVE_IMAGES_TO_VALIDATE_URL}`, {
         method: 'POST',
         body: formData,
       }).then(() => setLoading(false))
@@ -68,7 +69,6 @@ function ClassifierContent() {
 
   }
 
-   
   const resultMessage = (prediction) => {
     let message = 'la papa tiene tizón tardío.'
     if(prediction.toLowerCase().includes('sana')) {

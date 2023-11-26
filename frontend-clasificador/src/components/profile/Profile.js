@@ -8,18 +8,19 @@ import { AppContext } from '../../context';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { getSessionID, getUserID } from '../auth/session';
 import Copyright from '../copy-right/CopyRight';
+import { BASE_URL, GET_USER_BY_ID_URL } from '../../utils/constants';
 
 function Profile() {
 
   const {isAuth} = useContext(AppContext);
   const [userData, setUserData ] = useState({});
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
   
     const getUser = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/user?id=${getUserID()}`, {
+        const response = await fetch(`${BASE_URL}${GET_USER_BY_ID_URL}${getUserID()}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${getSessionID()}`,
@@ -39,7 +40,7 @@ function Profile() {
     if (isAuth) {
       getUser();
     }
-  }, []);
+  }, [isAuth]);
 
   return (
     <>

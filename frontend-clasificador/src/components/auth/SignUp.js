@@ -15,6 +15,7 @@ import { Link as LinkRoute} from "react-router-dom";
 import { AppContext } from '../../context';
 import bcrypt from 'bcryptjs';
 import Copyright from '../copy-right/CopyRight';
+import { BASE_URL, REGISTRO_URL } from '../../utils/constants';
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
@@ -23,6 +24,14 @@ export default function SignUp() {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
+
+  const setError = (message = '') => {
+    setMessage(message);
+    setMessageType('error');
+    setShowMessage(true);
+    setIsAuth(false);
+    setLoading(false);
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,7 +79,7 @@ export default function SignUp() {
       // Si todos los campos requeridos están llenos, continúa con el envío
       if (!Object.values(newErrors).some((error) => error)) {
   
-        fetch('http://127.0.0.1:5000/registro', {
+        fetch(`${BASE_URL}${REGISTRO_URL}`, {
           method: 'POST',
           body:  JSON.stringify(formData),
           headers: {
@@ -86,30 +95,20 @@ export default function SignUp() {
             navigate('/validacion-experto');
             setMessage('¡Registro Exitoso!');
             setMessageType('success');
+            setShowMessage(true);
+            setLoading(false);
           } else {
-            if (response.message) {
-              setMessageType('error');
-              setMessage(response.message);
-            }
+            const errorMessage = response.message ? response.message : '';
+            setError(errorMessage);
           }          
-          setShowMessage(true);
-          setLoading(false);
         })
         .catch(err => {
-          setLoading(false);
-          setShowMessage(true);
-          setMessageType('error');
-          setMessage('');
+          setError();
         });
-  
       } else {
-        setMessage('');
-        setShowMessage(true);
-        setLoading(false);
+        setError();
       }
-
-    });
-    
+    }); 
   };
   
   return (

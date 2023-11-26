@@ -1,19 +1,8 @@
 import { Avatar, Box, Container, Link, Stack, Typography } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        PapApp
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { GITHUB_URL, JOSHEP_EMAIL, KATHERINE_EMAIL, LORENA_EMAIL } from "../../utils/constants";
+import Copyright from "../copy-right/CopyRight";
 
 function About() { 
     return (
@@ -87,7 +76,7 @@ function About() {
           <Box sx={{display: 'flex', justifyContent: 'center', py: 2}}>
             <Stack direction="column" spacing={2} sx={{display: 'flex', alignItems: 'center'}}>
               <Stack direction="row" sx={{display: 'row', alignItems: 'center'}}>
-                <GitHubIcon /><Link href={'https://github.com/katherinegonzalez/ClasificadorTizonTemprano'}>GitHub</Link>
+                <GitHubIcon /><Link href={GITHUB_URL}>GitHub</Link>
               </Stack>
              
               <Stack direction="row" sx={{display: 'row', alignItems: 'center'}}>
@@ -95,14 +84,14 @@ function About() {
               </Stack>
               
               <Stack sx={{display: 'flex', alignItems: 'center'}}>
-                <Link href={'mailto:ja.blanco@javeriana.edu.co'} color="primary">
-                  ja.blanco@javeriana.edu.co
+                <Link href={`mailto:${JOSHEP_EMAIL}`} color="primary">
+                  {JOSHEP_EMAIL}
                 </Link>
-                <Link href={'mailto:ja.blanco@javeriana.edu.co'} color="primary">
-                  lorenamora@javeriana.edu.co
+                <Link href={`mailto:${LORENA_EMAIL}`} color="primary">
+                  {LORENA_EMAIL}
                 </Link>
-                <Link href={'mailto:ja.blanco@javeriana.edu.co'} color="primary">
-                  gonzalezskatherinex@javeriana.edu.co
+                <Link href={`mailto:${KATHERINE_EMAIL}`} color="primary">
+                  {KATHERINE_EMAIL}
                 </Link>
               </Stack>   
              
