@@ -13,14 +13,14 @@ Esta aplicación web está implementada con React, javascript, html y css. Y se 
 Para instalar y configurar el proyecto en tu ambiente local, sigue los siguientes pasos:
 
 1. Clona el repositorio: `git clone https://github.com/katherinegonzalez/ClasificadorTizonTemprano.git`
-2. Instala las dependencias: `npm install`
+2. Ve a la carpeta del proyecto frontend `cd frontend-clasificador/`
+3. Instala las dependencias: `npm install`
 
 ##  Ejecución del Proyecto 💻 
 
 Para ejecutar el proyecto en tu ambiente local:
 
-1. Ve a la carpeta del proyecto frontend `cd frontend-clasificador/`
-2. Ejecuta el comando `npm start`, de esta manera se ejecuta la aplicación en modo de desarrollo.
+1. Ejecuta el comando `npm start`, de esta manera se ejecuta la aplicación en modo de desarrollo.
 2. Abre tu navegador en [http://localhost:3000](http://localhost:3000)
 
     ### Nota: Asegúrate de que el Backend de la aplicación también este corriendo en tu servidor local. Si aún no lo tienes configurado haz click [aquí](./clasificador-server/README.md).

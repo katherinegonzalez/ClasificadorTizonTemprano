@@ -12,8 +12,7 @@ CORS(app)  # Habilita CORS para la aplicación
 
 app.config['SECRET_KEY'] = 'tu_clave_secreta'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:mysql123*@localhost/clasificadorDB?charset=utf8mb4'
-#'mysql://root:mysql123*@localhost/clasificadorDB'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tu_contraseña@localhost/clasificadorDB?charset=utf8mb4'
 
 # Inicializa la base de datos con la aplicación
 db.init_app(app)

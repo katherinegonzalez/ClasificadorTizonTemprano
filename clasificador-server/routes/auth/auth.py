@@ -1,6 +1,5 @@
-from flask import Flask, Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 import jwt
 from models.models import User, Expert, db
 from flask_bcrypt import Bcrypt

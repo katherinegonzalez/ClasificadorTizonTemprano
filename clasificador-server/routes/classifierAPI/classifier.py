@@ -1,7 +1,6 @@
-from flask import Flask, Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app
 from flask_cors import CORS
 from fastai.vision.all import *
-import torch
 from pathlib import Path
 import pathlib
 temp = pathlib.PosixPath
