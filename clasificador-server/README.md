@@ -18,7 +18,6 @@ Para instalar y configurar el proyecto en tu ambiente local, sigue los siguiente
 2. Ve a la carpeta del proyecto backend `cd clasificador-server/`
 3. Instala las siguientes dependencias: 
 
-    * `!pip3 install flask install Pillow==9.1.0`
     * `pip3 install -U flask-cors`
     * `pip3 install PyJWT`
     * `pip3 install Flask-SQLAlchemy`
@@ -39,7 +38,7 @@ Para importar el esquema de la base de datos en Workbench:
 1. Abre MySQL Workbench y conectacte a tu servidor MySQL.  
 2. Ve al menú "Server" y selecciona "Data Import".  
 3. Configura las Opciones de Importación:  
-    * Selecciona la ubicación de la carpeta `BaseDeDatos` de este proyecto.  
+    * Selecciona la ubicación de la carpeta `base-de-datos` de este proyecto.  
     * Selecciona la base de datos de destino en su servidor.    
     
     ### Nota: Asegúrate de tener previamente creada tu base de datos con el nombre clasificadorDB, es aquí donde importarás los archivos .sql.  
@@ -50,7 +49,7 @@ Para importar el esquema de la base de datos en Workbench:
 `app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tu_contraseña@localhost/clasificadorDB?charset=utf8mb4'`
 
 
-Y listo! Si la aplicación de frontend ya está siendo ejecutada en tu ambiente local entnces puedes empezar a probar el sistema PapApp, si aún no está ejecutándose haz click [aquí](../frontend-clasificador/README.md) y sigue los pasos.
+Y listo! Si la aplicación de frontend ya está siendo ejecutada en tu ambiente local entonces puedes empezar a probar el sistema PapApp, si aún no está ejecutándose haz click [aquí](../frontend-clasificador/README.md) y sigue los pasos.
 
 ### Nota: 
 
